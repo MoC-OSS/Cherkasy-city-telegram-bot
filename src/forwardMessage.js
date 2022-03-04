@@ -1,4 +1,5 @@
 const logger = require('./logger');
+const config = require('./config');
 const { getForwardedPeerData, getTargetPeerData } = require('./peers');
 
 module.exports = async (api, anUpdate) => {
@@ -7,14 +8,14 @@ module.exports = async (api, anUpdate) => {
       from_peer: {
         _: 'inputPeerChannel',
         ...getTargetPeerData(),
-        // channel_id: config.targetPeerId,
-        // access_hash: config.targetPeerHash,
+        channel_id: config.targetPeerId,
+        access_hash: config.targetPeerHash,
       },
       to_peer: {
         _: 'inputPeerChannel',
         ...getForwardedPeerData(),
-        // channel_id: config.forwardedPeerId,
-        // access_hash: config.forwardedPeerHash,
+        channel_id: config.forwardedPeerId,
+        access_hash: config.forwardedPeerHash,
       },
       id: [anUpdate.message.id],
       random_id: [
