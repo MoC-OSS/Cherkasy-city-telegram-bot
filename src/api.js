@@ -4,6 +4,7 @@ const MTProto = require('@mtproto/core');
 const { sleep } = require('@mtproto/core/src/utils/common');
 
 const config = require('./config');
+const logger = require('./logger');
 const updatesHandler = require('./updatesHandler');
 
 class API {
@@ -24,7 +25,8 @@ class API {
 
       return result;
     } catch (error) {
-      console.log(`${method} error:`, error);
+      logger.error(`${method} error:`, error);
+      logger.error(JSON.stringify(error));
 
       const { error_code, error_message } = error;
 

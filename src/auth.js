@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 const config = require('./config');
+const logger = require('./logger');
 const api = require('./api');
 
 function checkPassword({ srp_id, A, M1 }) {
@@ -15,13 +16,11 @@ function checkPassword({ srp_id, A, M1 }) {
 
 async function getUser() {
   try {
-    const user = await api.call('users.getFullUser', {
+    return await api.call('users.getFullUser', {
       id: {
         _: 'inputUserSelf',
       },
     });
-
-    return user;
   } catch (error) {
     return null;
   }
@@ -61,7 +60,7 @@ module.exports = async () => {
   const user = await getUser();
 
   if (!user) {
-    console.log('User is undefined, try to new connection');
+    logger.info('User is undefined, try to new connection');
 
     const { code, phoneNumber: phone } = config;
     const { phone_code_hash } = await sendCode(phone);
@@ -81,7 +80,7 @@ module.exports = async () => {
       }
     } catch (error) {
       if (error.error_message !== 'SESSION_PASSWORD_NEEDED') {
-        console.log('error:', error);
+        logger.error(JSON.stringify(error));
 
         return;
       }
@@ -103,7 +102,7 @@ module.exports = async () => {
       });
 
       const checkPasswordResult = await checkPassword({ srp_id, A, M1 });
-      console.log(checkPasswordResult);
+      logger.info(checkPasswordResult);
     }
   }
 };

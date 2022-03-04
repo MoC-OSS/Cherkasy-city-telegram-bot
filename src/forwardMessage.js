@@ -1,17 +1,20 @@
-const config = require('./config');
+const logger = require('./logger');
+const { getForwardedPeerData, getTargetPeerData } = require('./peers');
 
 module.exports = async (api, anUpdate) => {
   try {
     await api.call('messages.forwardMessages', {
       from_peer: {
         _: 'inputPeerChannel',
-        channel_id: config.targetPeerId,
-        access_hash: config.targetPeerHash,
+        ...getTargetPeerData(),
+        // channel_id: config.targetPeerId,
+        // access_hash: config.targetPeerHash,
       },
       to_peer: {
         _: 'inputPeerChannel',
-        channel_id: config.forwardedPeerId,
-        access_hash: config.forwardedPeerHash,
+        ...getForwardedPeerData(),
+        // channel_id: config.forwardedPeerId,
+        // access_hash: config.forwardedPeerHash,
       },
       id: [anUpdate.message.id],
       random_id: [
@@ -19,9 +22,9 @@ module.exports = async (api, anUpdate) => {
           Math.ceil(Math.random() * 0xffffff),
       ],
     });
-    console.log(`Message with id ${anUpdate.message.id} is redirected`);
+    logger.info(`Message with id ${anUpdate.message.id} is redirected`);
   } catch (error) {
-    console.error('Happen error when forward message');
-    console.error(error);
+    logger.error('Happen error when forward message');
+    logger.error(JSON.stringify(error));
   }
 };
