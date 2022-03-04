@@ -15,15 +15,15 @@ module.exports = {
     'ТРИВОГИ',
     '🟢ВІДБІЙ',
     'ВІДБІЙ',
+    'АВІАУДАР',
+    'ЛИШАЙТЕСЯ',
+    'УКРИТТЯХ',
+    'УКРИТТЯХ!',
+    'УКРИТТІ',
+    'УКРИТТІ.',
+    'непаніка',
   ],
   // Skichko
   targetPeerId: process.env.TARGET_PEER_ID,
   targetPeerHash: process.env.TARGET_PEER_HASH,
-
-  // volunteers
-  forwardedPeerId: process.env.FORWARDED_PEER_ID,
-  forwardedPeerHash: process.env.FORWARDED_PEER_HASH,
-
-  startWork: process.env.START_WORK,
-  endWork: process.env.END_WORK,
 };

@@ -1,14 +1,10 @@
 const { DateTime } = require('luxon');
 
-const config = require('./config');
-
-const START_WORK = DateTime.fromISO(config.startWork).setZone('Europe/Kiev');
-const END_WORK = DateTime.fromISO(config.endWork).setZone('Europe/Kiev');
-
-module.exports = () => {
+module.exports = ({ from, to }) => {
+  const FROM = DateTime.fromObject(from, { zone: 'Europe/Kiev' });
+  const TO = DateTime.fromObject(to, { zone: 'Europe/Kiev' });
   const NOW = DateTime.now().setZone('Europe/Kiev');
 
-  if (NOW.hour < 12) return NOW < END_WORK;
-
-  return NOW > START_WORK;
+  if (NOW.hour < 12) return NOW < TO;
+  return NOW > FROM;
 };
