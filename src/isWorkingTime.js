@@ -2,8 +2,8 @@ const { DateTime } = require('luxon');
 
 const config = require('./config');
 
-const START_WORK = DateTime.fromISO(config.startWork);
-const END_WORK = DateTime.fromISO(config.endWork);
+const START_WORK = DateTime.fromISO(config.startWork).setZone('Europe/Kiev');
+const END_WORK = DateTime.fromISO(config.endWork).setZone('Europe/Kiev');
 
 module.exports = () => {
   const NOW = DateTime.now().setZone('Europe/Kiev');
