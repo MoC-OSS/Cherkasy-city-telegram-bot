@@ -4,7 +4,7 @@ function printLog(message) {
   console.log(
     `[${DateTime.now()
       .setZone('Europe/Kiev')
-      .toFormat('yyyy-MM-dd HH:mm:ss')}] ${JSON.stringify(message)}`,
+      .toFormat('yyyy-MM-dd HH:mm:ss')}] ${message}`,
   );
 }
 
