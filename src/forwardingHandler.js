@@ -1,6 +1,7 @@
 const recipients = require('../recipients.json');
 const isWorkingTime = require('./isWorkingTime');
 const forwardMessages = require('./forwardMessage');
+const sendSms = require('./smsService');
 
 module.exports = (api, redirectThisUpdates) => {
   recipients
@@ -11,4 +12,6 @@ module.exports = (api, redirectThisUpdates) => {
     .forEach((aRecipient) => {
       forwardMessages(api, aRecipient.peer, redirectThisUpdates);
     });
+
+  sendSms(redirectThisUpdates);
 };
