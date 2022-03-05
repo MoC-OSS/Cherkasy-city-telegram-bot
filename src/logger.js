@@ -1,12 +1,14 @@
-const pino = require('pino');
+const { DateTime } = require('luxon');
 
-module.exports = pino({
-  prettyPrint: {
-    colorize: true,
-    crlf: true,
-    levelFirst: true,
-    timestampKey: 'time',
-    translateTime: 'yyyy-MM-dd HH:mm:ss',
-    ignore: 'pid,hostname',
-  },
-});
+function printLog(message) {
+  console.log(
+    `[${DateTime.now()
+      .setZone('Europe/Kiev')
+      .toFormat('yyyy-mm-dd HH:MM:ss')}] ${JSON.stringify(message)}`,
+  );
+}
+
+module.exports = {
+  info: (message) => printLog(message),
+  error: (message) => printLog(message),
+};

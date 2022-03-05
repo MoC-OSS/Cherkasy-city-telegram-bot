@@ -1,29 +1,18 @@
 // const api = require('./api');
 
 // (async () => {
-//   const resolvedPeer = await api.call('contacts.resolveUsername', {
-//     username: 'Черкаси. Оперативна інформація.',
+//   const resolvedPeer = await api.call('messages.getChats', {
+//     id: ['1658013752'],
 //     // username: 'secondMy1231231231',
 //     // username: 'myTestBotChannel1',
 //     // username: 'AleksandrSkichko',
 //   });
 
-//   const channel = resolvedPeer.chats.find(
-//     (chat) => chat.id === resolvedPeer.peer.channel_id,
-//   );
+//   console.log(resolvedPeer);
 
-//   const inputPeer = {
-//     _: 'inputPeerChannel',
-//     channel_id: channel.id,
-//     access_hash: channel.access_hash,
-//   };
-
-//   // // TEST CHANNEL
-//   // const inputPeer = {
-//   //   _: 'inputPeerChannel',
-//   //   channel_id: '1763665721',
-//   //   access_hash: '9867884003741617456',
-//   // };
+//   // const channel = resolvedPeer.chats.find(
+//   //   (chat) => chat.id === resolvedPeer.peer.channel_id,
+//   // );
 
 //   // // SKICHKO
 //   // const inputPeer = {
