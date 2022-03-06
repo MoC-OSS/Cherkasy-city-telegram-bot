@@ -66,4 +66,12 @@ api.mtproto.updates.on('updates', (updateInfo) =>
   updatesHandler(api, updateInfo),
 );
 
+setInterval(async () => {
+  try {
+    await api.call('updates.getState');
+  } catch (error) {
+    logger.error(JSON.stringify(error));
+  }
+}, 1000);
+
 module.exports = api;
