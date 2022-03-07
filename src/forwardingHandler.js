@@ -1,17 +1,14 @@
 const recipients = require('../recipients.json');
 const isWorkingTime = require('./isWorkingTime');
 const forwardMessages = require('./forwardMessage');
-const sendSms = require('./smsService');
 
-module.exports = (api, redirectThisUpdates) => {
+module.exports = (api, ids) => {
   recipients
     .filter(
       (aRecipient) =>
         !(aRecipient.sending_time && !isWorkingTime(aRecipient.sending_time)),
     )
     .forEach((aRecipient) => {
-      forwardMessages(api, aRecipient.peer, redirectThisUpdates);
+      forwardMessages(api, aRecipient.peer, ids);
     });
-
-  sendSms(redirectThisUpdates);
 };
