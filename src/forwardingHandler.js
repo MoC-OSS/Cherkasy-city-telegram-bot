@@ -1,4 +1,4 @@
-const recipients = require('../recipients.json');
+const recipients = require('../recipients');
 const isWorkingTime = require('./isWorkingTime');
 const forwardMessages = require('./forwardMessage');
 
