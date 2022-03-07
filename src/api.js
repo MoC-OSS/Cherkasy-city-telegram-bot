@@ -5,7 +5,6 @@ const { sleep } = require('@mtproto/core/src/utils/common');
 
 const config = require('./config');
 const logger = require('./logger');
-const updatesHandler = require('./updatesHandler');
 
 class API {
   constructor() {
@@ -61,17 +60,5 @@ class API {
 }
 
 const api = new API();
-
-api.mtproto.updates.on('updates', (updateInfo) =>
-  updatesHandler(api, updateInfo),
-);
-
-setInterval(async () => {
-  try {
-    await api.call('updates.getState');
-  } catch (error) {
-    logger.error(JSON.stringify(error));
-  }
-}, 1000);
 
 module.exports = api;

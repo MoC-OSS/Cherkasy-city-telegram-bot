@@ -2,11 +2,8 @@
 const logger = require('./logger');
 const config = require('./config');
 
-module.exports = async (api, peer, redirectedUpdates) => {
+module.exports = async (api, peer, ids) => {
   try {
-    const ids = redirectedUpdates.map(
-      (updatedEvent) => updatedEvent.message.id,
-    );
     await api.call('messages.forwardMessages', {
       from_peer: {
         _: 'inputPeerChannel',
@@ -20,7 +17,11 @@ module.exports = async (api, peer, redirectedUpdates) => {
           Math.ceil(Math.random() * 0xffffff),
       ],
     });
-    logger.info(`Message with id ${ids} is redirected`);
+    logger.info(
+      `Message with id ${ids} is redirected to ${
+        peer.channel_id || peer.chat_id
+      }`,
+    );
   } catch (error) {
     logger.error('Happen error when forward message');
     logger.error(JSON.stringify(error));
