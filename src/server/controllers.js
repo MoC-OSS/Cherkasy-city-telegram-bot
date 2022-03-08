@@ -3,7 +3,7 @@ const api = require('../api');
 
 function forward(req, res) {
   res.end();
-  forwardingHandler(api, req.body.ids);
+  forwardingHandler(api, req.body.forwardObject);
 }
 
 function notFound(req, res) {

@@ -2,7 +2,7 @@
 const logger = require('./logger');
 const config = require('./config');
 
-module.exports = async (api, peer, ids) => {
+module.exports = async (api, peer, id) => {
   try {
     await api.call('messages.forwardMessages', {
       from_peer: {
@@ -11,14 +11,14 @@ module.exports = async (api, peer, ids) => {
         access_hash: config.targetPeerHash,
       },
       to_peer: peer,
-      id: ids, // anUpdate.message.id
+      id: [id], // anUpdate.message.id
       random_id: [
         Math.ceil(Math.random() * 0xffffff) +
           Math.ceil(Math.random() * 0xffffff),
       ],
     });
     logger.info(
-      `Message with id ${ids} is redirected to ${
+      `Message with id ${id} is redirected to ${
         peer.channel_id || peer.chat_id
       }`,
     );
