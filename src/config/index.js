@@ -1,31 +1,20 @@
 require('dotenv').config();
+const Joi = require('@hapi/joi');
 
-module.exports = {
-  appId: process.env.APP_ID,
-  apiHash: process.env.APP_HASH,
-  phoneNumber: process.env.PHONE_NUMBER,
-  code: process.env.PHONE_CODE,
-  keywords: [
-    'ПОВІТРЯНА',
-    'ТРИВОГА',
-    'УКРИТТЯ!',
-    'УКРИТТЯ',
-    'ВІДБІЙ',
-    'ПОВІТРЯНОЇ',
-    'ТРИВОГИ',
-    '🟢ВІДБІЙ',
-    'ВІДБІЙ',
-    'АВІАУДАР',
-    'ЛИШАЙТЕСЯ',
-    'УКРИТТЯХ',
-    'УКРИТТЯХ!',
-    'УКРИТТІ',
-    'УКРИТТІ.',
-    'непаніка',
-  ],
-  // Skichko
-  targetPeerId: process.env.TARGET_PEER_ID,
-  targetPeerHash: process.env.TARGET_PEER_HASH,
-  smsUrl: 'https://alertradar.herokuapp.com/',
-  smsKey: process.env.SMS_KEY,
-};
+const envVarsSchema = Joi.object({
+  TELEGRAM_TOKEN: Joi.string().required(),
+})
+  .unknown()
+  .required();
+
+const { error, value: envVars } = envVarsSchema.validate(process.env);
+
+if (error) {
+  throw new Error(`Config validation error: ${error.message}`);
+}
+
+module.exports = Object.freeze({
+  telegram: {
+    token: envVars.TELEGRAM_TOKEN,
+  },
+});

@@ -1,7 +1,22 @@
-const auth = require('./auth');
-const logger = require('./logger');
-const server = require('./server');
+const { Bot, session } = require('grammy');
 
-logger.info('Start re-forwarding application');
-auth();
-server();
+const config = require('./config');
+const sessionConfig = require('./sessions');
+
+const { setCommands } = require('./commands');
+const { setHandlers } = require('./handlers');
+const { setHears } = require('./hears');
+const { setFlows } = require('./flows');
+
+const bot = new Bot(config.telegram.token);
+
+bot.use(session(sessionConfig));
+
+setCommands(bot);
+setHears(bot);
+setFlows(bot);
+setHandlers(bot);
+
+bot.start();
+
+console.log('bot successfully started');

@@ -1,5 +1,5 @@
 {
-  "name": "forwardbot",
+  "name": "cctb",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,12 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@mtproto/core": "^6.1.1",
-    "axios": "^0.26.0",
+    "@grammyjs/router": "^1.1.1",
+    "@hapi/joi": "^17.1.1",
+    "@satont/grammy-redis-storage": "^1.2.0",
     "dotenv": "^16.0.0",
-    "i": "^0.3.7",
-    "luxon": "^2.3.1",
-    "node-cron": "^3.0.0",
+    "grammy": "^1.7.0",
+    "ioredis": "^4.28.5",
     "npm": "^8.5.3"
   },
   "devDependencies": {
