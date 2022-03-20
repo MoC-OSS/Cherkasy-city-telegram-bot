@@ -6,13 +6,18 @@ const { Keyboard } = require('grammy');
 
 const constants = require('../../constants');
 const messages = require('../../messages');
+const { jobService } = require('../../services');
 
 /**
  * @param {GrammyContext} ctx
  * */
 const initFlow = async (ctx) => {
+  const jobId = await jobService.createNew(ctx.from.id);
+
   ctx.session.step = constants.steps.componyName;
-  await ctx.reply(messages.shareJobFlow.componyName);
+  ctx.session.jobId = jobId;
+
+  ctx.reply(messages.shareJobFlow.componyName);
 };
 
 /**
@@ -20,7 +25,8 @@ const initFlow = async (ctx) => {
  * */
 const componyName = async (ctx) => {
   ctx.session.step = constants.steps.settlement;
-  ctx.session.componyName = ctx.msg.text;
+
+  await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
   ctx.reply(messages.shareJobFlow.settlement);
 };
 
@@ -29,7 +35,8 @@ const componyName = async (ctx) => {
  * */
 const settlement = async (ctx) => {
   ctx.session.step = constants.steps.jobName;
-  ctx.session.settlement = ctx.msg.text;
+
+  await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
   ctx.reply(messages.shareJobFlow.jobName);
 };
 
@@ -38,7 +45,8 @@ const settlement = async (ctx) => {
  * */
 const jobName = async (ctx) => {
   ctx.session.step = constants.steps.jobDescription;
-  ctx.session.jobName = ctx.msg.text;
+
+  await jobService.setName(ctx.session.jobId, ctx.msg.text);
   ctx.reply(messages.shareJobFlow.jobDescription);
 };
 
@@ -47,7 +55,8 @@ const jobName = async (ctx) => {
  * */
 const jobDescription = async (ctx) => {
   ctx.session.step = constants.steps.contactData;
-  ctx.session.jobDescription = ctx.msg.text;
+
+  await jobService.setDescription(ctx.session.jobId, ctx.msg.text);
   ctx.reply(messages.shareJobFlow.contactData);
 };
 
@@ -56,27 +65,18 @@ const jobDescription = async (ctx) => {
  * */
 const contactData = async (ctx) => {
   ctx.session.step = constants.steps.preView;
-  ctx.session.contactData = ctx.msg.text;
 
-  ctx.reply(
-    messages.shareJobFlow.preView({
-      ...ctx.session,
-      timestamp: new Date().toLocaleString('uk-UA', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    }),
-    {
-      parse_mode: 'HTML',
-      one_time_keyboard: true,
-      reply_markup: new Keyboard()
-        .text(messages.buttons.sendToModerator)
-        .text(messages.buttons.cancel),
-    },
-  );
+  await jobService.setContact(ctx.session.jobId, ctx.msg.text);
+
+  const job = await jobService.getByIdForView(ctx.session.jobId);
+
+  ctx.reply(messages.shareJobFlow.preView(job), {
+    parse_mode: 'HTML',
+    one_time_keyboard: true,
+    reply_markup: new Keyboard()
+      .text(messages.buttons.sendToModerator)
+      .text(messages.buttons.cancel),
+  });
 };
 
 module.exports = {
