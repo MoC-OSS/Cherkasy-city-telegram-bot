@@ -3,6 +3,7 @@ const { Bot, session } = require('grammy');
 const { initDbConnection } = require('./db');
 const config = require('./config');
 const sessionConfig = require('./sessions');
+const { messageCleanerJob } = require('./cronJobs');
 
 const { ChannelMessagesSkipMiddleware } = require('./middlewares');
 const { setCommands } = require('./commands');
@@ -16,6 +17,7 @@ const bot = new Bot(config.telegram.token);
 
 const channelMessagesSkipMiddleware = new ChannelMessagesSkipMiddleware(bot);
 
+messageCleanerJob(bot);
 bot.use(channelMessagesSkipMiddleware.middleware());
 
 bot.use(session(sessionConfig));

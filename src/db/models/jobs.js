@@ -43,4 +43,14 @@ module.exports = class Jobs {
       })
       .update(data);
   }
+
+  /**
+   * @param {number} id
+   * @param {any} data
+   */
+  async getValuesByTime(time) {
+    return this.client('jobs').select('*').where({
+      deleted_time: time,
+    });
+  }
 };

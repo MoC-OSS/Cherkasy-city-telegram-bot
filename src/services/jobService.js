@@ -1,6 +1,7 @@
 const {
   models: { jobsModel },
 } = require('../db');
+const constants = require('../constants');
 
 module.exports = {
   getByIdForView: async (id) => {
@@ -59,9 +60,26 @@ module.exports = {
       contact,
     }),
 
-  prepareToPublish: (jobId, time) =>
+  setDataForRemoving: (jobId, messageId) => {
+    const removeTime = new Date(new Date().getTime() + constants.removeTime);
+    removeTime.setSeconds(0);
+    removeTime.setMilliseconds(0);
+    return jobsModel.setValueById(jobId, {
+      published_message_id: messageId,
+      deleted_time: removeTime,
+    });
+  },
+
+  setModerated: (jobId) =>
     jobsModel.setValueById(jobId, {
-      deleted_time: time,
       is_moderated: true,
     }),
+
+  getForRemoving: async () => {
+    const now = new Date();
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+
+    return jobsModel.getValuesByTime(now);
+  },
 };

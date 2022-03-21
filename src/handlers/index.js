@@ -10,6 +10,7 @@ const sendToModerator = require('./sendToModerator');
 const moderatorCheckHandler = require('./moderatorCheckHandler');
 const cancelBtnHandler = require('./cancelBtnHandler');
 const shareJob = require('./shareJob');
+const removeJobMessageHandler = require('./removeJobMessageHandler');
 
 module.exports = {
   /**
@@ -26,4 +27,5 @@ module.exports = {
   //
   sendToModerator,
   cancelBtnHandler,
+  removeJobMessageHandler,
 };

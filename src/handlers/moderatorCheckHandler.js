@@ -13,20 +13,17 @@ const { jobService } = require('../services');
  * @param {string} jobId
  * */
 const publishHandler = async (ctx, jobId) => {
-  const removeTime = new Date(new Date().getTime() + constants.removeTime);
+  await jobService.setModerated(jobId);
 
-  // set remove time
-  // set job like moderated
-  await jobService.prepareToPublish(jobId, removeTime);
-  // notify creator
   const job = await jobService.getByIdForView(jobId);
-  // publish to channel
-  await ctx.api.sendMessage(
+  const { message_id: messageId } = await ctx.api.sendMessage(
     constants.channel.id,
     messages.shareJobFlow.publish(job),
     { parse_mode: 'HTML' },
   );
-  await ctx.api.sendMessage(job.creatorId, messages.postPublished);
+
+  await jobService.setDataForRemoving(jobId, messageId);
+  await ctx.api.sendMessage(job.creatorId, messages.jobPublished);
 };
 
 /**
@@ -39,7 +36,7 @@ const declineHandler = async (ctx, jobId) => {
   const keyboard = new Keyboard()
     .text(messages.buttons.shareJob)
     .text(messages.buttons.report);
-  await ctx.api.sendMessage(creatorId, messages.postCanceled, {
+  await ctx.api.sendMessage(creatorId, messages.jobCanceled, {
     reply_markup: {
       one_time_keyboard: true,
       keyboard: keyboard.build(),
