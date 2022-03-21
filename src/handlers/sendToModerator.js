@@ -2,7 +2,7 @@
  * @typedef { import("grammy").Context } GrammyContext
  */
 
-const { InlineKeyboard } = require('grammy');
+const { InlineKeyboard, Keyboard } = require('grammy');
 
 const messages = require('../messages');
 const constants = require('../constants');
@@ -12,8 +12,9 @@ const { jobService } = require('../services');
  * @param {GrammyContext} ctx
  * */
 module.exports = async (ctx) => {
+  const keyboard = new Keyboard().text(messages.buttons.shareJob);
   await ctx.reply(messages.moderating.sendToModerator, {
-    reply_markup: { remove_keyboard: true },
+    reply_markup: { one_time_keyboard: true, keyboard: keyboard.build() },
   });
 
   const { jobId } = ctx.session;

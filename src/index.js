@@ -2,7 +2,7 @@ const { Bot, session } = require('grammy');
 
 const { initDbConnection } = require('./db');
 const config = require('./config');
-const sessionConfig = require('./sessions');
+const sessionClient = require('./sessions');
 const { messageCleanerJob } = require('./cronJobs');
 
 const { ChannelMessagesSkipMiddleware } = require('./middlewares');
@@ -11,22 +11,26 @@ const { setHandlers } = require('./handlers');
 const { setHears } = require('./hears');
 const { setFlows } = require('./flows');
 
-initDbConnection();
+async function boot() {
+  initDbConnection();
 
-const bot = new Bot(config.telegram.token);
+  const bot = new Bot(config.telegram.token);
 
-const channelMessagesSkipMiddleware = new ChannelMessagesSkipMiddleware(bot);
+  const channelMessagesSkipMiddleware = new ChannelMessagesSkipMiddleware(bot);
 
-messageCleanerJob(bot);
-bot.use(channelMessagesSkipMiddleware.middleware());
+  messageCleanerJob(bot);
+  bot.use(channelMessagesSkipMiddleware.middleware());
 
-bot.use(session(sessionConfig));
+  await sessionClient.init();
+  bot.use(session(await sessionClient.config()));
 
-setCommands(bot);
-setHears(bot);
-setFlows(bot);
-setHandlers(bot);
+  setCommands(bot);
+  setHears(bot);
+  setFlows(bot);
+  setHandlers(bot);
 
-bot.start();
+  bot.start();
+  console.log('bot successfully started');
+}
 
-console.log('bot successfully started');
+boot();

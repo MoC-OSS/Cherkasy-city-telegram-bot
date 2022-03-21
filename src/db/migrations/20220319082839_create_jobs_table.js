@@ -8,11 +8,11 @@ exports.up = async (knex) => {
     table.uuid('id').defaultTo(knex.raw('uuid_generate_v4()')).primary();
     table.integer('creator_id').notNullable();
     table.increments('count_id');
-    table.string('compony_name');
-    table.string('settlement');
-    table.string('name');
-    table.string('description', 1023);
-    table.string('contact');
+    table.string('compony_name', 1023);
+    table.string('settlement', 1023);
+    table.string('name', 1023);
+    table.string('description', 2047);
+    table.string('contact', 1023);
     table.boolean('is_moderated').defaultTo(false);
     table.integer('published_message_id');
     table.timestamp('deleted_time');

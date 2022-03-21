@@ -30,6 +30,11 @@ module.exports = {
     return job.creator_id;
   },
 
+  getCountId: async (jobId) => {
+    const job = await jobsModel.getById(jobId);
+    return job.count_id;
+  },
+
   createNew: async (creatorId) => {
     const job = await jobsModel.create(creatorId);
     return job.id;

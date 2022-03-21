@@ -1,11 +1,20 @@
-const { RedisAdapter } = require('@satont/grammy-redis-storage');
-const IORedis = require('ioredis');
+const { PsqlAdapter } = require('@satont/grammy-psql-storage');
+const { Client } = require('pg');
 
-const redisInstance = new IORedis('redis://localhost:6379');
+const config = require('../config');
 
-const storage = new RedisAdapter({ instance: redisInstance });
+const client = new Client({
+  user: config.db.user,
+  hostname: config.db.host,
+  database: config.db.database,
+  password: config.db.password,
+  port: config.db.port,
+});
 
 module.exports = {
-  initial: () => ({ step: 'idle' }),
-  storage,
+  init: () => client.connect(),
+  config: async () => ({
+    initial: () => ({ step: 'idle' }),
+    storage: await PsqlAdapter.create({ tableName: 'sessions', client }),
+  }),
 };

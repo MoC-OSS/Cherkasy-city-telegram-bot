@@ -2,8 +2,9 @@ module.exports = Object.freeze({
   moderator: {
     id: 5104831385,
   },
+  bot: { url: 'https://t.me/cctb_demo_bot' },
   // channel: { id: -1001430758822 },
-  channel: { id: -1001642795864 },
+  channel: { id: -1001642795864, url: 'https://t.me/test1231231231233123123' },
   commands: {
     start: 'start',
   },

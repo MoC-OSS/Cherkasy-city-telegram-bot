@@ -23,7 +23,14 @@ const publishHandler = async (ctx, jobId) => {
   );
 
   await jobService.setDataForRemoving(jobId, messageId);
-  await ctx.api.sendMessage(job.creatorId, messages.jobPublished);
+  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  await ctx.api.sendMessage(job.creatorId, messages.jobPublished(job.countId), {
+    parse_mode: 'HTML',
+    reply_markup: {
+      one_time_keyboard: true,
+      keyboard: keyboard.build(),
+    },
+  });
 };
 
 /**
@@ -32,11 +39,10 @@ const publishHandler = async (ctx, jobId) => {
  * */
 const declineHandler = async (ctx, jobId) => {
   // notify creator
+  const countId = await jobService.getCountId(jobId);
   const creatorId = await jobService.getCreatorId(jobId);
-  const keyboard = new Keyboard()
-    .text(messages.buttons.shareJob)
-    .text(messages.buttons.report);
-  await ctx.api.sendMessage(creatorId, messages.jobCanceled, {
+  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  await ctx.api.sendMessage(creatorId, messages.jobCanceled(countId), {
     reply_markup: {
       one_time_keyboard: true,
       keyboard: keyboard.build(),
@@ -47,21 +53,27 @@ const declineHandler = async (ctx, jobId) => {
 /**
  * @param {GrammyContext} ctx
  * */
-module.exports = (ctx) => {
+module.exports = async (ctx) => {
   const payload = ctx.callbackQuery.data;
 
   const [type, jobId] = payload.split('|');
 
   switch (type) {
     case constants.payloads.publish:
-      publishHandler(ctx, jobId);
+      await publishHandler(ctx, jobId);
       break;
     case constants.payloads.decline:
-      declineHandler(ctx, jobId);
+      await declineHandler(ctx, jobId);
       break;
 
     default:
       ctx.reply(messages.error);
       break;
   }
+
+  await ctx.api.editMessageText(
+    ctx.update.callback_query.from.id,
+    ctx.update.callback_query.message.message_id,
+    ctx.update.callback_query.message.text,
+  );
 };

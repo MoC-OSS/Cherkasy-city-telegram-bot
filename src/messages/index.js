@@ -1,3 +1,5 @@
+const constants = require('../constants');
+
 module.exports = Object.freeze({
   welcome:
     'Привіт! Я employer_ck бот. Я допоможу тобі розмістити актуальні вакансії' +
@@ -6,7 +8,6 @@ module.exports = Object.freeze({
     '"Розмістити вакансію"',
   buttons: {
     shareJob: 'Розмістити вакансію',
-    report: 'Поскаржитись',
     sendToModerator: 'Надіслати на модерацію',
     cancel: 'Відхилити',
     publish: 'Опублікувати',
@@ -44,8 +45,8 @@ module.exports = Object.freeze({
       `<b>Опис вакансії:</b> ${data.jobDescription}\n\n` +
       `<b>Контактні дані роботодавця:</b> ${data.contactData}\n\n\n` +
       'Шукаєте працівників? Можете розмістити свою вакансію в цьому каналі' +
-      ' за допомогою офіційного <a href="https://t.me/cctb_demo_bot">' +
-      'боту Черкаської обласної державної адміністрації</a>',
+      ` за допомогою офіційного <a href="${constants.bot.url}">` +
+      'боту Черкаської ОДА</a>',
   },
   moderating: {
     sendToModerator:
@@ -59,9 +60,10 @@ module.exports = Object.freeze({
   jobRePublished:
     'Ваша вакансія була видалена після 48 годин, якщо бажаєте опублікувати' +
     ' її знов будь ласка натисність відповідну кнопку',
-  jobPublished:
-    'Ваша вакансія була успішно розміщена в нашому Telegram-каналі [link]',
-  jobCanceled:
-    'На жаль, ваша вакансія не пройшла процес модерації. Якщо бажаєте' +
-    ' спробувати знову натисніть кнопку “Розмістити вакансію”',
+  jobPublished: (countId) =>
+    `Ваша вакансія #${countId} була успішно розміщена в нашому` +
+    ` <a href="${constants.channel.url}">Telegram-каналі</a>`,
+  jobCanceled: (countId) =>
+    `На жаль, ваша вакансія #${countId} не пройшла процес модерації.` +
+    ' Якщо бажаєте спробувати знову натисніть кнопку “Розмістити вакансію”',
 });
