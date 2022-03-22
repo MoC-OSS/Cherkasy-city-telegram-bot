@@ -80,6 +80,7 @@ const contactData = async (ctx) => {
           messages.buttons.sendToModerator,
           `${constants.payloads.toModerator}|${job.id}`,
         )
+        .row()
         .text(
           messages.buttons.cancel,
           `${constants.payloads.cancel}|${job.id}`,

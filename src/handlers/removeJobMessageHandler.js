@@ -28,6 +28,7 @@ const handler = async (bot) => {
             messages.buttons.rePublish,
             `${constants.payloads.publish}|${aJob.id}`,
           )
+          .row()
           .text(
             messages.buttons.noActual,
             `${constants.payloads.skip}|${aJob.id}`,

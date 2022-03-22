@@ -33,6 +33,7 @@ module.exports = async (ctx, jobId) => {
           messages.buttons.publish,
           `${constants.payloads.publish}|${jobId}`,
         )
+        .row()
         .text(
           messages.buttons.decline,
           `${constants.payloads.decline}|${jobId}`,
