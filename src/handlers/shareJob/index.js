@@ -2,7 +2,7 @@
  * @typedef { import("grammy").Context } GrammyContext
  */
 
-const { Keyboard } = require('grammy');
+const { InlineKeyboard } = require('grammy');
 
 const constants = require('../../constants');
 const messages = require('../../messages');
@@ -68,15 +68,25 @@ const contactData = async (ctx) => {
 
   await jobService.setContact(ctx.session.jobId, ctx.msg.text);
 
-  const job = await jobService.getByIdForView(ctx.session.jobId);
+  const job = await jobService.getById(ctx.session.jobId);
 
-  ctx.reply(messages.shareJobFlow.preView(job), {
-    parse_mode: 'HTML',
-    one_time_keyboard: true,
-    reply_markup: new Keyboard()
-      .text(messages.buttons.sendToModerator)
-      .text(messages.buttons.cancel),
-  });
+  const { message_id: preViewMessageId } = await ctx.reply(
+    messages.shareJobFlow.preView(job),
+    {
+      parse_mode: 'HTML',
+      one_time_keyboard: true,
+      reply_markup: new InlineKeyboard()
+        .text(
+          messages.buttons.sendToModerator,
+          `${constants.payloads.toModerator}|${job.id}`,
+        )
+        .text(
+          messages.buttons.cancel,
+          `${constants.payloads.cancel}|${job.id}`,
+        ),
+    },
+  );
+  await jobService.setPreViewMessage(ctx.session.jobId, preViewMessageId);
 };
 
 module.exports = {

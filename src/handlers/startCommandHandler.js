@@ -7,6 +7,7 @@ module.exports = async (ctx) => {
   await ctx.reply(messages.welcome, {
     reply_markup: {
       one_time_keyboard: true,
+      resize_keyboard: true,
       keyboard: keyboard.build(),
     },
   });

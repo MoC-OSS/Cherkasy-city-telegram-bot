@@ -2,7 +2,7 @@
  * @typedef { import("grammy").Context } GrammyContext
  */
 
-const { InlineKeyboard } = require('grammy');
+const { Keyboard } = require('grammy');
 
 const messages = require('../messages');
 const constants = require('../constants');

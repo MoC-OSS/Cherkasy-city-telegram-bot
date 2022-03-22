@@ -15,6 +15,7 @@ exports.up = async (knex) => {
     table.string('contact', 1023);
     table.boolean('is_moderated').defaultTo(false);
     table.integer('published_message_id');
+    table.integer('preview_message_id');
     table.timestamp('deleted_time');
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());

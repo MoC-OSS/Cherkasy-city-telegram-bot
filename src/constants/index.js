@@ -1,6 +1,7 @@
 module.exports = Object.freeze({
   moderator: {
     id: 5104831385,
+    // id: 5212508056,
   },
   bot: { url: 'https://t.me/cctb_demo_bot' },
   // channel: { id: -1001430758822 },
@@ -19,9 +20,21 @@ module.exports = Object.freeze({
     contactData: 'contactData',
   },
   payloads: {
+    toModerator: 'to_moderator',
+    cancel: 'cancel',
     publish: 'job_mod_pub',
     decline: 'job_mod_dec',
   },
   // removeTime: 60 * 60 * 24 * 1000,
   removeTime: 3 * 60 * 1000,
+  timeSettings: {
+    ukraine: 'uk-UA',
+    local: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    },
+  },
 });

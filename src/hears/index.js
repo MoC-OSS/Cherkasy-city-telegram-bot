@@ -12,7 +12,5 @@ module.exports = {
    * */
   setHears: (bot) => {
     bot.hears(buttons.shareJob, handlers.shareJob.initFlow);
-    bot.hears(buttons.sendToModerator, handlers.sendToModerator);
-    bot.hears(buttons.cancel, handlers.cancelBtnHandler);
   },
 };

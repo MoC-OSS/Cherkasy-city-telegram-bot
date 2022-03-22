@@ -4,24 +4,23 @@ const {
 const constants = require('../constants');
 
 module.exports = {
-  getByIdForView: async (id) => {
+  getById: async (id) => {
     const job = await jobsModel.getById(id);
     return {
       id: job.id,
+      creatorId: job.creator_id,
       countId: job.count_id,
-      timestamp: new Date().toLocaleString('uk-UA', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      componyName: job.compony_name,
       settlement: job.settlement,
+      componyName: job.compony_name,
       jobName: job.name,
       jobDescription: job.description,
       contactData: job.contact,
-      creatorId: job.creator_id,
+      publishedMessageId: job.published_message_id,
+      previewMessageId: job.preview_message_id,
+      timestamp: new Date().toLocaleString(
+        constants.timeSettings.ukraine,
+        constants.timeSettings.local,
+      ),
     };
   },
 
@@ -78,6 +77,11 @@ module.exports = {
   setModerated: (jobId) =>
     jobsModel.setValueById(jobId, {
       is_moderated: true,
+    }),
+
+  setPreViewMessage: (jobId, preViewMessageId) =>
+    jobsModel.setValueById(jobId, {
+      preview_message_id: preViewMessageId,
     }),
 
   getForRemoving: async () => {

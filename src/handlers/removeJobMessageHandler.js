@@ -1,3 +1,5 @@
+const { InlineKeyboard } = require('grammy');
+
 const { jobService } = require('../services');
 const constants = require('../constants');
 const messages = require('../messages');
@@ -16,10 +18,18 @@ const handler = async (bot) => {
       console.log('Happen error when try to delete job from channel', error);
     }
     // notify job creator
-    await bot.api.sendMessage(aJob.creator_id, messages.jobRePublished);
+    await bot.api.sendMessage(
+      aJob.creator_id,
+      messages.jobRePublished(aJob.count_id),
+      {
+        reply_to_message_id: aJob.preview_message_id,
+        reply_markup: new InlineKeyboard().text(
+          messages.buttons.rePublish,
+          `${constants.payloads.publish}|${aJob.id}`,
+        ),
+      },
+    );
   });
-
-  console.log(jobsForRemoving);
 };
 
 module.exports = handler;
