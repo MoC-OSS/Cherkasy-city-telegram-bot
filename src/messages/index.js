@@ -33,7 +33,7 @@ module.exports = Object.freeze({
       ' адреса електронної пошти, за бажанням контактну особу.',
     preView: (data) =>
       '<b>Попередній вигляд вакансії</b>\n\n' +
-      `<b>${data.jobName}</b>\n` +
+      `<b>${data.jobName.toUpperCase()}</b>\n` +
       `<b>${data.componyName}</b>\n` +
       `<b>#${data.countId}</b>\n\n` +
       `<b>⛳ Населений пункт:</b> ${data.settlement}\n` +
@@ -44,7 +44,7 @@ module.exports = Object.freeze({
       ' від Черкаської ОДА!\n\n' +
       `${data.timestamp}`,
     publish: (data) =>
-      `<b>${data.jobName}</b>\n` +
+      `<b>${data.jobName.toUpperCase()}</b>\n` +
       `<b>${data.componyName}</b>\n` +
       `<b>#${data.countId}</b>\n\n` +
       `<b>⛳ Населений пункт:</b> ${data.settlement}\n` +
