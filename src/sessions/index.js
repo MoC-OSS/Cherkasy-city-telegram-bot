@@ -5,7 +5,7 @@ const config = require('../config');
 
 const client = new Client({
   user: config.db.user,
-  hostname: config.db.host,
+  host: config.db.host,
   database: config.db.database,
   password: config.db.password,
   port: config.db.port,
