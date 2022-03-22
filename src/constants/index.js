@@ -1,7 +1,7 @@
 module.exports = Object.freeze({
   moderator: {
-    id: 5104831385,
-    // id: 5212508056,
+    // id: 5104831385,
+    id: 5212508056,
   },
   bot: { url: 'https://t.me/cctb_demo_bot' },
   // channel: { id: -1001430758822 },
