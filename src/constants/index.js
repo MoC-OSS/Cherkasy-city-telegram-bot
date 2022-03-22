@@ -11,6 +11,7 @@ module.exports = Object.freeze({
   },
   onHandlers: {
     message: 'message',
+    callback: 'callback_query:data',
   },
   steps: {
     componyName: 'componyName',
@@ -22,6 +23,7 @@ module.exports = Object.freeze({
   payloads: {
     toModerator: 'to_moderator',
     cancel: 'cancel',
+    skip: 'skip',
     publish: 'job_mod_pub',
     decline: 'job_mod_dec',
   },

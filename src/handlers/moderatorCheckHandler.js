@@ -10,6 +10,8 @@ const { jobService } = require('../services');
 const sendToModeratorHandler = require('./sendToModerator');
 const cancelBtnHandler = require('./cancelBtnHandler');
 
+const spamStack = [];
+
 /**
  * @param {GrammyContext} ctx
  * @param {string} jobId
@@ -35,9 +37,11 @@ const publishHandler = async (ctx, jobId) => {
       keyboard: keyboard.build(),
     },
   });
-  await ctx.reply(messages.moderating.published(job.countId), {
-    reply_to_message_id: ctx.update.callback_query.message.message_id,
-  });
+  if (ctx.from.id === constants.moderator.id) {
+    await ctx.reply(messages.moderating.published(job.countId), {
+      reply_to_message_id: ctx.update.callback_query.message.message_id,
+    });
+  }
 };
 
 /**
@@ -60,11 +64,27 @@ const declineHandler = async (ctx, jobId) => {
     reply_to_message_id: ctx.update.callback_query.message.message_id,
   });
 };
+/**
+ * @param {GrammyContext} ctx
+ * */
+function spamChecker(ctx) {
+  const fromUserId = ctx.from.id;
+
+  if (spamStack.includes(fromUserId)) return false;
+
+  spamStack.push(fromUserId);
+  setTimeout(() => {
+    const index = spamStack.indexOf(fromUserId);
+    if (index >= 0) spamStack.splice(index, 1);
+  }, 1000);
+  return true;
+}
 
 /**
  * @param {GrammyContext} ctx
  * */
 module.exports = async (ctx) => {
+  if (!spamChecker(ctx)) return;
   const payload = ctx.callbackQuery.data;
 
   const [type, jobId] = payload.split('|');
@@ -81,6 +101,8 @@ module.exports = async (ctx) => {
       break;
     case constants.payloads.cancel:
       await cancelBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.skip:
       break;
 
     default:

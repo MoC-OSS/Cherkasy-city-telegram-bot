@@ -2,7 +2,7 @@
  * @typedef { import("grammy").Context } GrammyContext
  */
 
-const { Keyboard } = require('grammy');
+const { InlineKeyboard } = require('grammy');
 
 const messages = require('../messages');
 const constants = require('../constants');
@@ -12,5 +12,7 @@ const { jobService } = require('../services');
  * @param {GrammyContext} ctx
  * */
 module.exports = async (ctx) => {
-  ctx.reply('onMessage handler');
+  ctx.reply('onMessage handler', {
+    reply_markup: new InlineKeyboard().text('test btn', 'test'),
+  });
 };

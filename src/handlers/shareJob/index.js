@@ -24,19 +24,9 @@ const initFlow = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const componyName = async (ctx) => {
-  ctx.session.step = constants.steps.settlement;
-
-  await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
-  ctx.reply(messages.shareJobFlow.settlement);
-};
-
-/**
- * @param {GrammyContext} ctx
- * */
-const settlement = async (ctx) => {
   ctx.session.step = constants.steps.jobName;
 
-  await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
+  await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
   ctx.reply(messages.shareJobFlow.jobName);
 };
 
@@ -44,9 +34,19 @@ const settlement = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const jobName = async (ctx) => {
-  ctx.session.step = constants.steps.jobDescription;
+  ctx.session.step = constants.steps.settlement;
 
   await jobService.setName(ctx.session.jobId, ctx.msg.text);
+  ctx.reply(messages.shareJobFlow.settlement);
+};
+
+/**
+ * @param {GrammyContext} ctx
+ * */
+const settlement = async (ctx) => {
+  ctx.session.step = constants.steps.jobDescription;
+
+  await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
   ctx.reply(messages.shareJobFlow.jobDescription);
 };
 

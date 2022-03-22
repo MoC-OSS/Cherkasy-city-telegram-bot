@@ -14,7 +14,7 @@ const { jobService } = require('../services');
 module.exports = async (ctx, jobId) => {
   const jobCountId = await jobService.getCountId(jobId);
   const keyboard = new Keyboard().text(messages.buttons.shareJob);
-  ctx.reply(messages.jobDiscard(jobCountId), {
+  ctx.reply(messages.moderating.declined(jobCountId), {
     reply_markup: {
       one_time_keyboard: true,
       resize_keyboard: true,

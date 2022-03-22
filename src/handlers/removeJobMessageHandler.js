@@ -23,10 +23,15 @@ const handler = async (bot) => {
       messages.jobRePublished(aJob.count_id),
       {
         reply_to_message_id: aJob.preview_message_id,
-        reply_markup: new InlineKeyboard().text(
-          messages.buttons.rePublish,
-          `${constants.payloads.publish}|${aJob.id}`,
-        ),
+        reply_markup: new InlineKeyboard()
+          .text(
+            messages.buttons.rePublish,
+            `${constants.payloads.publish}|${aJob.id}`,
+          )
+          .text(
+            messages.buttons.noActual,
+            `${constants.payloads.skip}|${aJob.id}`,
+          ),
       },
     );
   });

@@ -18,7 +18,7 @@ module.exports = {
    * */
   setHandlers: (bot) => {
     bot.on(constants.onHandlers.message, onMessageHandler);
-    bot.on('callback_query:data', moderatorCheckHandler);
+    bot.on(constants.onHandlers.callback, moderatorCheckHandler);
   },
   // commands
   startCommandHandler,
