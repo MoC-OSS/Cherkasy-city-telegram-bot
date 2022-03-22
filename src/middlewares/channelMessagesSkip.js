@@ -20,7 +20,11 @@ module.exports = class ChannelMessagesSkipMiddleware {
      * */
     // eslint-disable-next-line consistent-return
     return async (ctx, next) => {
-      logger.log(`new event from: ${ctx.from.id} | ${ctx.from.username}`);
+      logger.log(
+        `new event from: ${ctx.from.id} | ${
+          ctx.from.username || `${ctx.from.first_name} ${ctx.from.last_name}`
+        }`,
+      );
       if (
         (ctx.update.inline_query &&
           ctx.update.inline_query.chat_type !== 'channel') ||

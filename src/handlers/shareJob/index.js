@@ -6,7 +6,18 @@ const { InlineKeyboard } = require('grammy');
 
 const constants = require('../../constants');
 const messages = require('../../messages');
+const moderatorCheckHandler = require('../moderatorCheckHandler');
 const { jobService } = require('../../services');
+
+async function beforeHandlerChecker(ctx, length) {
+  if (ctx.callbackQuery) {
+    await moderatorCheckHandler(ctx);
+    return true;
+  }
+  if (ctx.msg.text.length >= length) return true;
+
+  return false;
+}
 
 /**
  * @param {GrammyContext} ctx
@@ -24,7 +35,9 @@ const initFlow = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const componyName = async (ctx) => {
-  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.componyName);
+  if (await beforeHandlerChecker(ctx, 1023))
+    return ctx.reply(messages.shareJobFlow.componyName);
+
   ctx.session.step = constants.steps.jobName;
 
   await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
@@ -35,7 +48,9 @@ const componyName = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const jobName = async (ctx) => {
-  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.jobName);
+  if (await beforeHandlerChecker(ctx, 1023))
+    return ctx.reply(messages.shareJobFlow.jobName);
+
   ctx.session.step = constants.steps.settlement;
 
   await jobService.setName(ctx.session.jobId, ctx.msg.text);
@@ -46,7 +61,9 @@ const jobName = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const settlement = async (ctx) => {
-  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.settlement);
+  if (await beforeHandlerChecker(ctx, 1023))
+    return ctx.reply(messages.shareJobFlow.settlement);
+
   ctx.session.step = constants.steps.jobDescription;
 
   await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
@@ -57,8 +74,9 @@ const settlement = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const jobDescription = async (ctx) => {
-  if (ctx.msg.text >= 2047)
+  if (await beforeHandlerChecker(ctx, 2047))
     return ctx.reply(messages.shareJobFlow.jobDescription);
+
   ctx.session.step = constants.steps.contactData;
 
   await jobService.setDescription(ctx.session.jobId, ctx.msg.text);
@@ -69,7 +87,8 @@ const jobDescription = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const contactData = async (ctx) => {
-  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.contactData);
+  if (await beforeHandlerChecker(ctx, 1023))
+    return ctx.reply(messages.shareJobFlow.contactData);
   ctx.session.step = constants.steps.preView;
 
   await jobService.setContact(ctx.session.jobId, ctx.msg.text);
