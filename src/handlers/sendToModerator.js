@@ -6,6 +6,7 @@ const { InlineKeyboard, Keyboard } = require('grammy');
 
 const messages = require('../messages');
 const constants = require('../constants');
+const config = require('../config');
 const { jobService } = require('../services');
 
 /**
@@ -24,7 +25,7 @@ module.exports = async (ctx, jobId) => {
   });
 
   ctx.api.sendMessage(
-    constants.moderator.id,
+    config.moderator.id,
     `${messages.moderating.request}\n\n${messages.shareJobFlow.preView(job)}`,
     {
       parse_mode: 'HTML',

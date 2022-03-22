@@ -11,6 +11,11 @@ const envVarsSchema = Joi.object({
   DB_PORT: Joi.string().required(),
 
   DEBUG: Joi.boolean().required().default(false),
+
+  MODERATOR_ID: Joi.number().required(),
+  CHANNEL_ID: Joi.number().required(),
+  CHANNEL_URL: Joi.string().required(),
+  BOT_URL: Joi.string().required(),
 })
   .unknown()
   .required();
@@ -33,4 +38,14 @@ module.exports = Object.freeze({
     port: envVars.DB_PORT,
   },
   debug: envVars.DEBUG,
+  moderator: {
+    id: envVars.MODERATOR_ID,
+  },
+  channel: {
+    id: envVars.CHANNEL_ID,
+    url: envVars.CHANNEL_URL,
+  },
+  bot: {
+    url: envVars.BOT_URL,
+  },
 });

@@ -10,6 +10,7 @@ const { setCommands } = require('./commands');
 const { setHandlers } = require('./handlers');
 const { setHears } = require('./hears');
 const { setFlows } = require('./flows');
+const logger = require('./logger');
 
 async function boot() {
   initDbConnection();
@@ -30,7 +31,7 @@ async function boot() {
   setHandlers(bot);
 
   bot.start();
-  console.log('bot successfully started');
+  logger.log('bot successfully started');
 }
 
 boot();

@@ -1,10 +1,11 @@
+const logger = require('../logger');
 const knexClient = require('./knex');
 
 const Jobs = require('./models/jobs');
 
 module.exports = {
   initDbConnection: async () => {
-    console.log('init connection to database');
+    logger.log('init connection to database');
     try {
       await knexClient.raw('select 1+1 as result');
     } catch (error) {

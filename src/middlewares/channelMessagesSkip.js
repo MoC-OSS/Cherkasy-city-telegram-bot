@@ -1,3 +1,5 @@
+const logger = require('../logger');
+
 module.exports = class ChannelMessagesSkipMiddleware {
   /**
    * @param {Bot} bot
@@ -18,6 +20,7 @@ module.exports = class ChannelMessagesSkipMiddleware {
      * */
     // eslint-disable-next-line consistent-return
     return async (ctx, next) => {
+      logger.log(`new event from: ${ctx.from.id} | ${ctx.from.username}`);
       if (
         (ctx.update.inline_query &&
           ctx.update.inline_query.chat_type !== 'channel') ||

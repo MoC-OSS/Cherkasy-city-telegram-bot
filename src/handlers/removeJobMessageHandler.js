@@ -2,7 +2,9 @@ const { InlineKeyboard } = require('grammy');
 
 const { jobService } = require('../services');
 const constants = require('../constants');
+const config = require('../config');
 const messages = require('../messages');
+const logger = require('../logger');
 
 const handler = async (bot) => {
   const jobsForRemoving = await jobService.getForRemoving();
@@ -10,12 +12,10 @@ const handler = async (bot) => {
   jobsForRemoving.forEach(async (aJob) => {
     // remove from channel
     try {
-      await bot.api.deleteMessage(
-        constants.channel.id,
-        aJob.published_message_id,
-      );
+      await bot.api.deleteMessage(config.channel.id, aJob.published_message_id);
     } catch (error) {
-      console.log('Happen error when try to delete job from channel', error);
+      logger.error('Happen error when try to delete job from channel');
+      logger.error(error);
     }
     // notify job creator
     await bot.api.sendMessage(

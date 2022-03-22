@@ -5,6 +5,7 @@
 const { Keyboard } = require('grammy');
 
 const constants = require('../constants');
+const config = require('../config');
 const messages = require('../messages');
 const { jobService } = require('../services');
 const sendToModeratorHandler = require('./sendToModerator');
@@ -21,7 +22,7 @@ const publishHandler = async (ctx, jobId) => {
 
   const job = await jobService.getById(jobId);
   const { message_id: messageId } = await ctx.api.sendMessage(
-    constants.channel.id,
+    config.channel.id,
     messages.shareJobFlow.publish(job),
     { parse_mode: 'HTML' },
   );
@@ -37,7 +38,7 @@ const publishHandler = async (ctx, jobId) => {
       keyboard: keyboard.build(),
     },
   });
-  if (ctx.from.id === constants.moderator.id) {
+  if (ctx.from.id === config.moderator.id) {
     await ctx.reply(messages.moderating.published(job.countId), {
       reply_to_message_id: ctx.update.callback_query.message.message_id,
     });
