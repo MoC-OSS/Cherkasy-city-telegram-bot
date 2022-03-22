@@ -24,46 +24,52 @@ const initFlow = async (ctx) => {
  * @param {GrammyContext} ctx
  * */
 const componyName = async (ctx) => {
+  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.componyName);
   ctx.session.step = constants.steps.jobName;
 
   await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
-  ctx.reply(messages.shareJobFlow.jobName);
+  return ctx.reply(messages.shareJobFlow.jobName);
 };
 
 /**
  * @param {GrammyContext} ctx
  * */
 const jobName = async (ctx) => {
+  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.jobName);
   ctx.session.step = constants.steps.settlement;
 
   await jobService.setName(ctx.session.jobId, ctx.msg.text);
-  ctx.reply(messages.shareJobFlow.settlement);
+  return ctx.reply(messages.shareJobFlow.settlement);
 };
 
 /**
  * @param {GrammyContext} ctx
  * */
 const settlement = async (ctx) => {
+  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.settlement);
   ctx.session.step = constants.steps.jobDescription;
 
   await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
-  ctx.reply(messages.shareJobFlow.jobDescription);
+  return ctx.reply(messages.shareJobFlow.jobDescription);
 };
 
 /**
  * @param {GrammyContext} ctx
  * */
 const jobDescription = async (ctx) => {
+  if (ctx.msg.text >= 2047)
+    return ctx.reply(messages.shareJobFlow.jobDescription);
   ctx.session.step = constants.steps.contactData;
 
   await jobService.setDescription(ctx.session.jobId, ctx.msg.text);
-  ctx.reply(messages.shareJobFlow.contactData);
+  return ctx.reply(messages.shareJobFlow.contactData);
 };
 
 /**
  * @param {GrammyContext} ctx
  * */
 const contactData = async (ctx) => {
+  if (ctx.msg.text >= 1023) return ctx.reply(messages.shareJobFlow.contactData);
   ctx.session.step = constants.steps.preView;
 
   await jobService.setContact(ctx.session.jobId, ctx.msg.text);
@@ -87,7 +93,7 @@ const contactData = async (ctx) => {
         ),
     },
   );
-  await jobService.setPreViewMessage(ctx.session.jobId, preViewMessageId);
+  return jobService.setPreViewMessage(ctx.session.jobId, preViewMessageId);
 };
 
 module.exports = {

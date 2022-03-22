@@ -35,7 +35,7 @@ module.exports = Object.freeze({
       '<b>Попередній вигляд вакансії</b>\n\n' +
       `<b>${data.jobName}</b>\n` +
       `<b>${data.componyName}</b>\n` +
-      `<b>#${data.countId}</b>\n` +
+      `<b>#${data.countId}</b>\n\n` +
       `<b>⛳ Населений пункт:</b> ${data.settlement}\n` +
       `<b>✏️ Опис вакансії:</b>\n${data.jobDescription}\n\n` +
       `<b>📞 Контактні дані:</b> ${data.contactData}\n\n` +
@@ -46,7 +46,7 @@ module.exports = Object.freeze({
     publish: (data) =>
       `<b>${data.jobName}</b>\n` +
       `<b>${data.componyName}</b>\n` +
-      `<b>#${data.countId}</b>\n` +
+      `<b>#${data.countId}</b>\n\n` +
       `<b>⛳ Населений пункт:</b> ${data.settlement}\n` +
       `<b>✏️ Опис вакансії:</b>\n${data.jobDescription}\n\n` +
       `<b>📞 Контактні дані:</b> ${data.contactData}\n\n` +
