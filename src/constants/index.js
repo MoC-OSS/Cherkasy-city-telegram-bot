@@ -1,5 +1,4 @@
 module.exports = Object.freeze({
-  channel: { id: -1001642795864, url: 'https://t.me/test1231231231233123123' },
   commands: {
     start: 'start',
     statistics: 'statistics',
@@ -33,6 +32,7 @@ module.exports = Object.freeze({
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+      timeZone: 'Europe/Kiev',
     },
   },
 });
