@@ -1,4 +1,3 @@
-const constants = require('../constants');
 const config = require('../config');
 
 module.exports = Object.freeze({
@@ -77,7 +76,7 @@ module.exports = Object.freeze({
     ' кнопку "Розмістити повторно".',
   jobPublished: (countId) =>
     `Ваша вакансія #${countId} була успішно розміщена в нашому ` +
-    `<a href="${constants.channel.url}">Telegram-каналі</a>`,
+    `<a href="${config.channel.url}">Telegram-каналі</a>`,
   jobCanceled: (countId) =>
     `На жаль, ваша вакансія #${countId} не пройшла процес модерації.` +
     ' Якщо бажаєте спробувати знову натисніть кнопку “Розмістити вакансію”.',
