@@ -29,8 +29,9 @@ const publishHandler = async (ctx, jobId) => {
 
   await jobService.setDataForRemoving(jobId, messageId);
   const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  await ctx.api.forwardMessage(job.creatorId, config.channel.id, messageId);
   await ctx.api.sendMessage(job.creatorId, messages.jobPublished(job.countId), {
-    reply_to_message_id: job.previewMessageId,
+    // reply_to_message_id: job.previewMessageId,
     parse_mode: 'HTML',
     reply_markup: {
       one_time_keyboard: true,

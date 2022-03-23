@@ -33,13 +33,12 @@ async function boot() {
   bot.catch((err) => {
     const { ctx } = err;
     logger.error(`Error while handling update ${ctx.update.update_id}:`);
-    const e = err.error;
-    if (e instanceof GrammyError) {
-      logger.error(`Error in request: ${e.description}`);
-    } else if (e instanceof HttpError) {
-      logger.error(`Could not contact Telegram: ${JSON.stringify(e)}`);
+    if (err.error instanceof GrammyError) {
+      logger.error(`Error in request: ${err.error.description}`);
+    } else if (err.error instanceof HttpError) {
+      logger.error(`Could not contact Telegram: ${JSON.stringify(err.error)}`);
     } else {
-      logger.error(`Unknown error: ${JSON.stringify(e)}`);
+      logger.error(`Unknown error: ${JSON.stringify(err.message)}`);
     }
   });
 
