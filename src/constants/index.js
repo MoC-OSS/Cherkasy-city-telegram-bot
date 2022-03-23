@@ -2,6 +2,7 @@ module.exports = Object.freeze({
   channel: { id: -1001642795864, url: 'https://t.me/test1231231231233123123' },
   commands: {
     start: 'start',
+    statistics: 'statistics',
   },
   onHandlers: {
     message: 'message',
@@ -12,6 +13,7 @@ module.exports = Object.freeze({
     settlement: 'settlement',
     jobName: 'jobName',
     jobDescription: 'jobDescription',
+    jobSalary: 'jonSalary',
     contactData: 'contactData',
   },
   payloads: {

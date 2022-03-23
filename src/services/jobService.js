@@ -14,6 +14,7 @@ module.exports = {
       componyName: job.compony_name,
       jobName: job.name,
       jobDescription: job.description,
+      jobSalary: job.salary,
       contactData: job.contact,
       publishedMessageId: job.published_message_id,
       previewMessageId: job.preview_message_id,
@@ -59,6 +60,11 @@ module.exports = {
       description,
     }),
 
+  setSalary: (jobId, salary) =>
+    jobsModel.setValueById(jobId, {
+      salary,
+    }),
+
   setContact: (jobId, contact) =>
     jobsModel.setValueById(jobId, {
       contact,
@@ -91,4 +97,6 @@ module.exports = {
 
     return jobsModel.getValuesByTime(now);
   },
+
+  getAllRecords: () => jobsModel.getAllValues(),
 };

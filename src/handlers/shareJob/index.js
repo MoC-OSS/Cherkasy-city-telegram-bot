@@ -77,9 +77,22 @@ const jobDescription = async (ctx) => {
   if (await beforeHandlerChecker(ctx, 2047))
     return ctx.reply(messages.shareJobFlow.jobDescription);
 
-  ctx.session.step = constants.steps.contactData;
+  ctx.session.step = constants.steps.jobSalary;
 
   await jobService.setDescription(ctx.session.jobId, ctx.msg.text);
+  return ctx.reply(messages.shareJobFlow.jobSalary);
+};
+
+/**
+ * @param {GrammyContext} ctx
+ * */
+const jobSalary = async (ctx) => {
+  if (await beforeHandlerChecker(ctx, 1023))
+    return ctx.reply(messages.shareJobFlow.jobSalary);
+
+  ctx.session.step = constants.steps.contactData;
+
+  await jobService.setSalary(ctx.session.jobId, ctx.msg.text);
   return ctx.reply(messages.shareJobFlow.contactData);
 };
 
@@ -121,5 +134,6 @@ module.exports = {
   settlement,
   jobName,
   jobDescription,
+  jobSalary,
   contactData,
 };

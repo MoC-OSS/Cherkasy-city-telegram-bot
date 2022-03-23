@@ -14,7 +14,7 @@ const client = new Client({
 module.exports = {
   init: () => client.connect(),
   config: async () => ({
-    initial: () => ({ step: 'idle' }),
+    initial: () => ({ step: '' }),
     storage: await PsqlAdapter.create({ tableName: 'sessions', client }),
   }),
 };

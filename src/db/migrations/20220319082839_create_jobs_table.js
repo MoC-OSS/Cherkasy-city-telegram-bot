@@ -12,6 +12,7 @@ exports.up = async (knex) => {
     table.string('settlement', 1023);
     table.string('name', 1023);
     table.string('description', 2047);
+    table.string('salary', 1023);
     table.string('contact', 1023);
     table.boolean('is_moderated').defaultTo(false);
     table.integer('published_message_id');

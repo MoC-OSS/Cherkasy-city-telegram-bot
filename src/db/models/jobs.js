@@ -53,4 +53,8 @@ module.exports = class Jobs {
       deleted_time: time,
     });
   }
+
+  getAllValues() {
+    return this.client('jobs').select('*');
+  }
 };

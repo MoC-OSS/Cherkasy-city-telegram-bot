@@ -11,6 +11,7 @@ const moderatorCheckHandler = require('./moderatorCheckHandler');
 const cancelBtnHandler = require('./cancelBtnHandler');
 const shareJob = require('./shareJob');
 const removeJobMessageHandler = require('./removeJobMessageHandler');
+const statisticsHandler = require('./statisticsHandler');
 
 module.exports = {
   /**
@@ -22,6 +23,7 @@ module.exports = {
   },
   // commands
   startCommandHandler,
+  statisticsHandler,
   // flows
   shareJob,
   //

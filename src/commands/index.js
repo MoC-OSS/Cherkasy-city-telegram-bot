@@ -12,5 +12,6 @@ module.exports = {
    * */
   setCommands: (bot) => {
     bot.command(constants.commands.start, handlers.startCommandHandler);
+    bot.command(constants.commands.statistics, handlers.statisticsHandler);
   },
 };
