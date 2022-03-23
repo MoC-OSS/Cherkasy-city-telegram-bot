@@ -1,4 +1,4 @@
-const { Bot, session } = require('grammy');
+const { Bot, session, GrammyError, HttpError } = require('grammy');
 
 const { initDbConnection } = require('./db');
 const config = require('./config');
@@ -29,6 +29,19 @@ async function boot() {
   setHears(bot);
   setFlows(bot);
   setHandlers(bot);
+
+  bot.catch((err) => {
+    const { ctx } = err;
+    logger.error(`Error while handling update ${ctx.update.update_id}:`);
+    const e = err.error;
+    if (e instanceof GrammyError) {
+      logger.error(`Error in request: ${e.description}`);
+    } else if (e instanceof HttpError) {
+      logger.error(`Could not contact Telegram: ${JSON.stringify(e)}`);
+    } else {
+      logger.error(`Unknown error: ${JSON.stringify(e)}`);
+    }
+  });
 
   bot.start();
   logger.log('bot successfully started');
