@@ -18,8 +18,8 @@ exports.up = async (knex) => {
     table.integer('published_message_id');
     table.integer('preview_message_id');
     table.timestamp('deleted_time');
+    table.timestamp('published_time');
     table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
   });
 };
 

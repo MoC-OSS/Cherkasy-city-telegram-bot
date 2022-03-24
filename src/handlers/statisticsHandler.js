@@ -3,6 +3,8 @@
  */
 
 const XLSX = require('xlsx');
+const { InputFile } = require('grammy');
+
 const config = require('../config');
 const messages = require('../messages');
 const { jobService } = require('../services');
@@ -13,25 +15,27 @@ const { jobService } = require('../services');
 module.exports = async (ctx) => {
   if (ctx.from.id !== config.moderator.id) return ctx.reply(messages.default);
 
-  // const allRecords = await jobService.getAllRecords();
-  const data = [
-    {
-      firstName: 'John',
-      lastName: 'Doe',
-    },
-    {
-      firstName: 'Smith',
-      lastName: 'Peters',
-    },
-    {
-      firstName: 'Alice',
-      lastName: 'Lee',
-    },
-  ];
+  const records = await jobService.getAllRecords();
+
+  const data = records.map((aRecord) => ({
+    'Номер вакансії': aRecord.count_id,
+    'Назва компанії': aRecord.compony_name,
+    'Назва вакансії': aRecord.name,
+    'Населений пункт': aRecord.settlement,
+    'Заробітна плата': aRecord.salary,
+    'Опис вакансії': aRecord.description,
+    'Контактні дані': aRecord.contact,
+    Опубліковано: aRecord.is_moderated ? 'Так' : 'Ні',
+    'Час публікації': aRecord.published_time || '',
+  }));
+
   const ws = XLSX.utils.json_to_sheet(data);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Responses');
-  XLSX.writeFile(wb, 'sampleData.export.xlsx');
+  const wbOpts = { bookType: 'xlsx', type: 'buffer' };
+  const resp = XLSX.write(wb, wbOpts); // write workbook buffer
 
-  return ctx.reply(messages.default);
+  return ctx.replyWithDocument(
+    new InputFile(resp, `${new Date().toISOString()}.xlsx`),
+  );
 };

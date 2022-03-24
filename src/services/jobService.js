@@ -82,6 +82,7 @@ module.exports = {
 
   setModerated: (jobId) =>
     jobsModel.setValueById(jobId, {
+      published_time: new Date(),
       is_moderated: true,
     }),
 
