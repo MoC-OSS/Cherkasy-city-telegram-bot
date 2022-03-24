@@ -13,7 +13,9 @@ const { jobService } = require('../services');
  * @param {GrammyContext} ctx
  * */
 module.exports = async (ctx) => {
-  if (ctx.from.id !== config.moderator.id || ctx.from.id !== config.creator.id)
+  if (
+    !(ctx.from.id === config.moderator.id || ctx.from.id === config.creator.id)
+  )
     return ctx.reply(messages.default);
 
   const records = await jobService.getAllRecords();
