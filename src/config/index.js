@@ -13,6 +13,7 @@ const envVarsSchema = Joi.object({
   DEBUG: Joi.boolean().required().default(false),
 
   CREATOR_ID: Joi.number().required(),
+  CLIENT_ID: Joi.number().required(),
   MODERATOR_ID: Joi.number().required(),
   CHANNEL_ID: Joi.number().required(),
   CHANNEL_URL: Joi.string().required(),
@@ -28,6 +29,7 @@ if (error) {
 }
 
 module.exports = Object.freeze({
+  client: { id: envVars.CLIENT_ID },
   creator: { id: envVars.CREATOR_ID },
   telegram: {
     token: envVars.TELEGRAM_TOKEN,

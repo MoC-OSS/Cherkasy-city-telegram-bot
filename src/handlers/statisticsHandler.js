@@ -15,7 +15,11 @@ const { jobService } = require('../services');
  * */
 module.exports = async (ctx) => {
   if (
-    !(ctx.from.id === config.moderator.id || ctx.from.id === config.creator.id)
+    !(
+      ctx.from.id === config.moderator.id ||
+      ctx.from.id === config.creator.id ||
+      ctx.from.id === config.client.id
+    )
   )
     return ctx.reply(messages.default);
 
