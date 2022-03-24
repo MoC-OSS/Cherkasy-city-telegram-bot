@@ -5,6 +5,7 @@
 const XLSX = require('xlsx');
 const { InputFile } = require('grammy');
 
+const constants = require('../constants');
 const config = require('../config');
 const messages = require('../messages');
 const { jobService } = require('../services');
@@ -29,7 +30,11 @@ module.exports = async (ctx) => {
     'Опис вакансії': aRecord.description,
     'Контактні дані': aRecord.contact,
     Опубліковано: aRecord.is_moderated ? 'Так' : 'Ні',
-    'Час публікації': aRecord.published_time || '',
+    'Час публікації':
+      new Date(aRecord.published_time).toLocaleString(
+        constants.timeSettings.ukraine,
+        constants.timeSettings.local,
+      ) || '',
   }));
 
   const ws = XLSX.utils.json_to_sheet(data);

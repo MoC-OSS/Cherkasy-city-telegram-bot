@@ -55,6 +55,6 @@ module.exports = class Jobs {
   }
 
   getAllValues() {
-    return this.client('jobs').select('*');
+    return this.client('jobs').select('*').orderBy('count_id');
   }
 };
