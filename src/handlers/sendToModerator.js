@@ -26,7 +26,9 @@ module.exports = async (ctx, jobId) => {
 
   ctx.api.sendMessage(
     config.moderator.id,
-    `${messages.moderating.request}\n\n${messages.shareJobFlow.preView(job)}`,
+    `${messages.moderating.request(
+      `@${ctx.from?.username},`,
+    )}\n\n${messages.shareJobFlow.preView(job)}`,
     {
       parse_mode: 'HTML',
       reply_markup: new InlineKeyboard()

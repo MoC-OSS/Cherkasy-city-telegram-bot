@@ -62,7 +62,7 @@ module.exports = Object.freeze({
     sendToModerator: (countId) =>
       `Дякуємо, ваша вакансія #${countId} відправлена на модерацію.` +
       ' Як тільки вона буде підтверджена, ви отримаєте повідомлення.',
-    request: 'Запит на модерацію',
+    request: (from) => `Запит на модерацію від ${from}`,
     declined: (countId) => `Дякуємо, вакансія #${countId} була відхилена!`,
     published: (countId) =>
       `Дякуємо, вакансія #${countId} була успішно опублікована!`,
