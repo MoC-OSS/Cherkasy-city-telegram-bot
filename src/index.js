@@ -32,7 +32,8 @@ async function boot() {
 
   bot.catch((err) => {
     const { ctx } = err;
-    logger.error(`Error while handling update ${ctx.update.update_id}:`);
+    logger.error(`Error while handling update ${JSON.stringify(ctx.update)}:`);
+    logger.error(JSON.stringify(err));
     if (err.error instanceof GrammyError) {
       logger.error(`Error in request: ${err.error.description}`);
     } else if (err.error instanceof HttpError) {
