@@ -8,6 +8,7 @@ const messages = require('../messages');
 const constants = require('../constants');
 const config = require('../config');
 const { jobService } = require('../services');
+const logger = require('../logger');
 
 /**
  * @param {GrammyContext} ctx
@@ -24,7 +25,9 @@ module.exports = async (ctx, jobId) => {
     },
   });
 
-  ctx.api.sendMessage(
+  logger.log(`send job ${job.countId} to moderator`);
+
+  await ctx.api.sendMessage(
     config.moderator.id,
     `${messages.moderating.request(
       `@${ctx.from?.username},`,

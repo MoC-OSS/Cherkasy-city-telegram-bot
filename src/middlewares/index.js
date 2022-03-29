@@ -1,5 +1,7 @@
-const ChannelMessagesSkipMiddleware = require('./channelMessagesSkip');
+const WrongMessagesSkipMiddleware = require('./wrongMessagesSkip');
+const LoggerMiddleware = require('./logger');
 
 module.exports = {
-  ChannelMessagesSkipMiddleware,
+  WrongMessagesSkipMiddleware,
+  LoggerMiddleware,
 };

@@ -5,7 +5,10 @@ const config = require('./config');
 const sessionClient = require('./sessions');
 const { messageCleanerJob } = require('./cronJobs');
 
-const { ChannelMessagesSkipMiddleware } = require('./middlewares');
+const {
+  WrongMessagesSkipMiddleware,
+  LoggerMiddleware,
+} = require('./middlewares');
 const { setCommands } = require('./commands');
 const { setHandlers } = require('./handlers');
 const { setHears } = require('./hears');
@@ -17,10 +20,12 @@ async function boot() {
 
   const bot = new Bot(config.telegram.token);
 
-  const channelMessagesSkipMiddleware = new ChannelMessagesSkipMiddleware(bot);
+  const wrongMessagesSkipMiddleware = new WrongMessagesSkipMiddleware(bot);
+  const loggerMiddleware = new LoggerMiddleware(bot);
 
   messageCleanerJob(bot);
-  bot.use(channelMessagesSkipMiddleware.middleware());
+  bot.use(loggerMiddleware.middleware());
+  bot.use(wrongMessagesSkipMiddleware.middleware());
 
   await sessionClient.init();
   bot.use(session(await sessionClient.config()));

@@ -14,7 +14,7 @@ async function beforeHandlerChecker(ctx, length) {
     await moderatorCheckHandler(ctx);
     return true;
   }
-  if (ctx.msg.text.length >= length) return true;
+  if (ctx.msg.text && ctx.msg.text.length >= length) return true;
 
   return false;
 }
