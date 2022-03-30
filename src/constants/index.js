@@ -23,7 +23,7 @@ module.exports = Object.freeze({
     decline: 'job_mod_dec',
   },
   // removeTime: 60 * 60 * 24 * 1000,
-  removeTime: 48 * 60 * 60 * 1000,
+  removeTime: 72 * 60 * 60 * 1000,
   timeSettings: {
     ukraine: 'uk-UA',
     local: {
