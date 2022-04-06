@@ -17,7 +17,9 @@ const envVarsSchema = Joi.object({
   MODERATOR_ID: Joi.number().required(),
   CHANNEL_ID: Joi.number().required(),
   CHANNEL_URL: Joi.string().required(),
+  CHANNEL_NAME: Joi.string().required(),
   BOT_URL: Joi.string().required(),
+  BOT_NAME: Joi.string().required(),
 })
   .unknown()
   .required();
@@ -48,8 +50,10 @@ module.exports = Object.freeze({
   channel: {
     id: envVars.CHANNEL_ID,
     url: envVars.CHANNEL_URL,
+    name: envVars.CHANNEL_NAME,
   },
   bot: {
     url: envVars.BOT_URL,
+    name: envVars.BOT_NAME,
   },
 });
