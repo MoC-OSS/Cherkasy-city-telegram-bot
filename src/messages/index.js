@@ -42,7 +42,7 @@ module.exports = Object.freeze({
       `${data.timestamp}\n\n` +
       '❗️ Шукаєте працівників? Діліться актуальними вакансіями в цьому каналі' +
       ` за допомогою Telegram боту @${config.bot.url}` +
-      ` "${config.channel.name}".\nTelegram бот створено командою` +
+      ` "${config.bot.name}".\nTelegram бот створено командою` +
       ' Master of Code Global',
     publish: (data) =>
       `<b>${data.jobName.toUpperCase()}</b>\n` +
@@ -55,7 +55,7 @@ module.exports = Object.freeze({
       `${data.timestamp}\n\n` +
       '❗️ Шукаєте працівників? Діліться актуальними вакансіями в цьому каналі' +
       ` за допомогою Telegram боту @${config.bot.url}` +
-      ` "${config.channel.name}".\nTelegram бот створено командою` +
+      ` "${config.bot.name}".\nTelegram бот створено командою` +
       ' Master of Code Global',
   },
   moderating: {
