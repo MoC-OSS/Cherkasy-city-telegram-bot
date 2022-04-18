@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 function getMessage(args) {
   return args.reduce((previousValue, currentValue, index) => {
     const chunk =
@@ -10,15 +12,15 @@ function getMessage(args) {
 
 module.exports = {
   log: (...arg) => {
-    console.log(
-      '\x1b[34m',
-      `[${new Date().toLocaleString()}] LOG: ${getMessage(arg)}`,
+    fs.appendFileSync(
+      `logs/${process.env.LOGS_FILE}.txt`,
+      `[${new Date().toLocaleString()}] LOG: ${getMessage(arg)}\n`,
     );
   },
   error: (...arg) => {
-    console.log(
-      '\x1b[31m',
-      `[${new Date().toLocaleString()}] ERROR: ${getMessage(arg)}`,
+    fs.appendFileSync(
+      `logs/${process.env.LOGS_FILE}.txt`,
+      `[${new Date().toLocaleString()}] ERROR: ${getMessage(arg)}\n`,
     );
   },
 };
