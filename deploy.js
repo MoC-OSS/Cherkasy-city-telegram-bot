@@ -18,6 +18,7 @@ async function deploy() {
     );
     await sleep(3000);
     console.log(`${bot.process_name} Deployed and Running! [${i}/${length}]`);
+    i += 1;
   }
   console.log(`End of Bots Deployment Process`);
 }
