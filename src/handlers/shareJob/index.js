@@ -28,7 +28,9 @@ const initFlow = async (ctx) => {
   ctx.session.step = constants.steps.componyName;
   ctx.session.jobId = jobId;
 
-  ctx.reply(messages.shareJobFlow.componyName);
+  ctx.reply(messages.shareJobFlow.componyName, {
+    parse_mode: 'HTML',
+  });
 };
 
 /**
@@ -36,12 +38,16 @@ const initFlow = async (ctx) => {
  * */
 const componyName = async (ctx) => {
   if (await beforeHandlerChecker(ctx, 1023))
-    return ctx.reply(messages.shareJobFlow.componyName);
+    return ctx.reply(messages.shareJobFlow.componyName, {
+      parse_mode: 'HTML',
+    });
 
   ctx.session.step = constants.steps.jobName;
 
   await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
-  return ctx.reply(messages.shareJobFlow.jobName);
+  return ctx.reply(messages.shareJobFlow.jobName, {
+    parse_mode: 'HTML',
+  });
 };
 
 /**
@@ -49,12 +55,16 @@ const componyName = async (ctx) => {
  * */
 const jobName = async (ctx) => {
   if (await beforeHandlerChecker(ctx, 1023))
-    return ctx.reply(messages.shareJobFlow.jobName);
+    return ctx.reply(messages.shareJobFlow.jobName, {
+      parse_mode: 'HTML',
+    });
 
   ctx.session.step = constants.steps.settlement;
 
   await jobService.setName(ctx.session.jobId, ctx.msg.text);
-  return ctx.reply(messages.shareJobFlow.settlement);
+  return ctx.reply(messages.shareJobFlow.settlement, {
+    parse_mode: 'HTML',
+  });
 };
 
 /**
@@ -62,12 +72,16 @@ const jobName = async (ctx) => {
  * */
 const settlement = async (ctx) => {
   if (await beforeHandlerChecker(ctx, 1023))
-    return ctx.reply(messages.shareJobFlow.settlement);
+    return ctx.reply(messages.shareJobFlow.settlement, {
+      parse_mode: 'HTML',
+    });
 
   ctx.session.step = constants.steps.jobDescription;
 
   await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
-  return ctx.reply(messages.shareJobFlow.jobDescription);
+  return ctx.reply(messages.shareJobFlow.jobDescription, {
+    parse_mode: 'HTML',
+  });
 };
 
 /**
@@ -75,12 +89,16 @@ const settlement = async (ctx) => {
  * */
 const jobDescription = async (ctx) => {
   if (await beforeHandlerChecker(ctx, 2047))
-    return ctx.reply(messages.shareJobFlow.jobDescription);
+    return ctx.reply(messages.shareJobFlow.jobDescription, {
+      parse_mode: 'HTML',
+    });
 
   ctx.session.step = constants.steps.jobSalary;
 
   await jobService.setDescription(ctx.session.jobId, ctx.msg.text);
-  return ctx.reply(messages.shareJobFlow.jobSalary);
+  return ctx.reply(messages.shareJobFlow.jobSalary, {
+    parse_mode: 'HTML',
+  });
 };
 
 /**
@@ -88,12 +106,16 @@ const jobDescription = async (ctx) => {
  * */
 const jobSalary = async (ctx) => {
   if (await beforeHandlerChecker(ctx, 1023))
-    return ctx.reply(messages.shareJobFlow.jobSalary);
+    return ctx.reply(messages.shareJobFlow.jobSalary, {
+      parse_mode: 'HTML',
+    });
 
   ctx.session.step = constants.steps.contactData;
 
   await jobService.setSalary(ctx.session.jobId, ctx.msg.text);
-  return ctx.reply(messages.shareJobFlow.contactData);
+  return ctx.reply(messages.shareJobFlow.contactData, {
+    parse_mode: 'HTML',
+  });
 };
 
 /**
@@ -101,7 +123,9 @@ const jobSalary = async (ctx) => {
  * */
 const contactData = async (ctx) => {
   if (await beforeHandlerChecker(ctx, 1023))
-    return ctx.reply(messages.shareJobFlow.contactData);
+    return ctx.reply(messages.shareJobFlow.contactData, {
+      parse_mode: 'HTML',
+    });
   ctx.session.step = constants.steps.preView;
 
   await jobService.setContact(ctx.session.jobId, ctx.msg.text);
