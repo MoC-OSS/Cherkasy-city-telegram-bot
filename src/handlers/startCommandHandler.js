@@ -6,6 +6,7 @@ module.exports = async (ctx) => {
   ctx.session.step = '';
   const keyboard = new Keyboard().text(messages.buttons.shareJob);
   await ctx.reply(messages.welcome, {
+    parse_mode: 'HTML',
     reply_markup: {
       one_time_keyboard: true,
       resize_keyboard: true,
