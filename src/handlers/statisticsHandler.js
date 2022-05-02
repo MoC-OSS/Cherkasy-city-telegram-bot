@@ -21,9 +21,16 @@ module.exports = async (ctx) => {
       ctx.from.id === config.client.id
     )
   )
-    try {
-      return ctx.reply(messages.default);
-    } catch {}
+    return ctx
+      .reply(messages.default)
+      .then(function (resp) {
+        // ...snip...
+      })
+      .catch(function (error) {
+        if (error.response && error.response.statusCode === 403) {
+          // ...snip...
+        }
+      });
 
   const records = await jobService.getAllRecords();
 
