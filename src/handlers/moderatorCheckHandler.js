@@ -19,30 +19,35 @@ const spamStack = [];
  * */
 const publishHandler = async (ctx, jobId) => {
   await jobService.setModerated(jobId);
+  try {
+    const job = await jobService.getById(jobId);
+    const { message_id: messageId } = await ctx.api.sendMessage(
+      config.channel.id,
+      messages.shareJobFlow.publish(job),
+      { parse_mode: 'HTML' },
+    );
 
-  const job = await jobService.getById(jobId);
-  const { message_id: messageId } = await ctx.api.sendMessage(
-    config.channel.id,
-    messages.shareJobFlow.publish(job),
-    { parse_mode: 'HTML' },
-  );
-
-  await jobService.setDataForRemoving(jobId, messageId);
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
-  await ctx.api.sendMessage(job.creatorId, messages.jobPublished(job.countId), {
-    reply_to_message_id: job.previewMessageId,
-    parse_mode: 'HTML',
-    reply_markup: {
-      one_time_keyboard: true,
-      resize_keyboard: true,
-      keyboard: keyboard.build(),
-    },
-  });
-  if (ctx.from.id === config.moderator.id) {
-    await ctx.reply(messages.moderating.published(job.countId), {
-      reply_to_message_id: ctx.update.callback_query.message.message_id,
-    });
-  }
+    await jobService.setDataForRemoving(jobId, messageId);
+    const keyboard = new Keyboard().text(messages.buttons.shareJob);
+    await ctx.api.sendMessage(
+      job.creatorId,
+      messages.jobPublished(job.countId),
+      {
+        reply_to_message_id: job.previewMessageId,
+        parse_mode: 'HTML',
+        reply_markup: {
+          one_time_keyboard: true,
+          resize_keyboard: true,
+          keyboard: keyboard.build(),
+        },
+      },
+    );
+    if (ctx.from.id === config.moderator.id) {
+      await ctx.reply(messages.moderating.published(job.countId), {
+        reply_to_message_id: ctx.update.callback_query.message.message_id,
+      });
+    }
+  } catch {}
 };
 
 /**
@@ -51,19 +56,25 @@ const publishHandler = async (ctx, jobId) => {
  * */
 const declineHandler = async (ctx, jobId) => {
   // notify creator
-  const job = await jobService.getById(jobId);
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
-  await ctx.api.sendMessage(job.creatorId, messages.jobCanceled(job.countId), {
-    reply_to_message_id: job.previewMessageId,
-    reply_markup: {
-      one_time_keyboard: true,
-      resize_keyboard: true,
-      keyboard: keyboard.build(),
-    },
-  });
-  await ctx.reply(messages.moderating.declined(job.countId), {
-    reply_to_message_id: ctx.update.callback_query.message.message_id,
-  });
+  try {
+    const job = await jobService.getById(jobId);
+    const keyboard = new Keyboard().text(messages.buttons.shareJob);
+    await ctx.api.sendMessage(
+      job.creatorId,
+      messages.jobCanceled(job.countId),
+      {
+        reply_to_message_id: job.previewMessageId,
+        reply_markup: {
+          one_time_keyboard: true,
+          resize_keyboard: true,
+          keyboard: keyboard.build(),
+        },
+      },
+    );
+    await ctx.reply(messages.moderating.declined(job.countId), {
+      reply_to_message_id: ctx.update.callback_query.message.message_id,
+    });
+  } catch {}
 };
 /**
  * @param {GrammyContext} ctx
@@ -98,7 +109,9 @@ module.exports = async (ctx) => {
       await declineHandler(ctx, jobId);
       break;
     case constants.payloads.toModerator:
-      await sendToModeratorHandler(ctx, jobId);
+      try {
+        await sendToModeratorHandler(ctx, jobId);
+      } catch {}
       break;
     case constants.payloads.cancel:
       await cancelBtnHandler(ctx, jobId);
@@ -107,13 +120,16 @@ module.exports = async (ctx) => {
       break;
 
     default:
-      ctx.reply(messages.error);
+      try {
+        ctx.reply(messages.error);
+      } catch {}
       break;
   }
-
-  await ctx.api.editMessageText(
-    ctx.update.callback_query.from.id,
-    ctx.update.callback_query.message.message_id,
-    ctx.update.callback_query.message.text,
-  );
+  try {
+    await ctx.api.editMessageText(
+      ctx.update.callback_query.from.id,
+      ctx.update.callback_query.message.message_id,
+      ctx.update.callback_query.message.text,
+    );
+  } catch {}
 };

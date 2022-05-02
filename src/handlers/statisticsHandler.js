@@ -21,7 +21,9 @@ module.exports = async (ctx) => {
       ctx.from.id === config.client.id
     )
   )
-    return ctx.reply(messages.default);
+    try {
+      return ctx.reply(messages.default);
+    } catch {}
 
   const records = await jobService.getAllRecords();
 
@@ -46,8 +48,9 @@ module.exports = async (ctx) => {
   XLSX.utils.book_append_sheet(wb, ws, 'Responses');
   const wbOpts = { bookType: 'xlsx', type: 'buffer' };
   const resp = XLSX.write(wb, wbOpts); // write workbook buffer
-
-  return ctx.replyWithDocument(
-    new InputFile(resp, `${new Date().toISOString()}.xlsx`),
-  );
+  try {
+    return ctx.replyWithDocument(
+      new InputFile(resp, `${new Date().toISOString()}.xlsx`),
+    );
+  } catch {}
 };
