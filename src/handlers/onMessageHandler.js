@@ -10,10 +10,12 @@ const messages = require('../messages');
  * @param {GrammyContext} ctx
  * */
 module.exports = async (ctx) => {
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
-  ctx.reply(messages.default, {
-    one_time_keyboard: true,
-    resize_keyboard: true,
-    keyboard: keyboard.build(),
-  });
+  try {
+    const keyboard = new Keyboard().text(messages.buttons.shareJob);
+    ctx.reply(messages.default, {
+      one_time_keyboard: true,
+      resize_keyboard: true,
+      keyboard: keyboard.build(),
+    });
+  } catch {}
 };

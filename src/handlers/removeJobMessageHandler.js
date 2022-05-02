@@ -17,24 +17,26 @@ const handler = async (bot) => {
       logger.error('Happen error when try to delete job from channel');
       logger.error(error);
     }
-    // notify job creator
-    await bot.api.sendMessage(
-      aJob.creator_id,
-      messages.jobRePublished(aJob.count_id),
-      {
-        reply_to_message_id: aJob.preview_message_id,
-        reply_markup: new InlineKeyboard()
-          .text(
-            messages.buttons.rePublish,
-            `${constants.payloads.publish}|${aJob.id}`,
-          )
-          .row()
-          .text(
-            messages.buttons.noActual,
-            `${constants.payloads.skip}|${aJob.id}`,
-          ),
-      },
-    );
+    try {
+      // notify job creator
+      await bot.api.sendMessage(
+        aJob.creator_id,
+        messages.jobRePublished(aJob.count_id),
+        {
+          reply_to_message_id: aJob.preview_message_id,
+          reply_markup: new InlineKeyboard()
+            .text(
+              messages.buttons.rePublish,
+              `${constants.payloads.publish}|${aJob.id}`,
+            )
+            .row()
+            .text(
+              messages.buttons.noActual,
+              `${constants.payloads.skip}|${aJob.id}`,
+            ),
+        },
+      );
+    } catch {}
   });
 };
 

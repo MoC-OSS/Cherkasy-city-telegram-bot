@@ -15,35 +15,36 @@ const logger = require('../logger');
  * */
 module.exports = async (ctx, jobId) => {
   const job = await jobService.getById(jobId);
+  try {
+    const keyboard = new Keyboard().text(messages.buttons.shareJob);
+    await ctx.reply(messages.moderating.sendToModerator(job.countId), {
+      reply_markup: {
+        resize_keyboard: true,
+        one_time_keyboard: true,
+        keyboard: keyboard.build(),
+      },
+    });
 
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
-  await ctx.reply(messages.moderating.sendToModerator(job.countId), {
-    reply_markup: {
-      resize_keyboard: true,
-      one_time_keyboard: true,
-      keyboard: keyboard.build(),
-    },
-  });
+    logger.log(`send job ${job.countId} to moderator`);
 
-  logger.log(`send job ${job.countId} to moderator`);
-
-  await ctx.api.sendMessage(
-    config.moderator.id,
-    `${messages.moderating.request(
-      `@${ctx.from?.username},`,
-    )}\n\n${messages.shareJobFlow.preView(job)}`,
-    {
-      parse_mode: 'HTML',
-      reply_markup: new InlineKeyboard()
-        .text(
-          messages.buttons.publish,
-          `${constants.payloads.publish}|${jobId}`,
-        )
-        .row()
-        .text(
-          messages.buttons.decline,
-          `${constants.payloads.decline}|${jobId}`,
-        ),
-    },
-  );
+    await ctx.api.sendMessage(
+      config.moderator.id,
+      `${messages.moderating.request(
+        `@${ctx.from?.username},`,
+      )}\n\n${messages.shareJobFlow.preView(job)}`,
+      {
+        parse_mode: 'HTML',
+        reply_markup: new InlineKeyboard()
+          .text(
+            messages.buttons.publish,
+            `${constants.payloads.publish}|${jobId}`,
+          )
+          .row()
+          .text(
+            messages.buttons.decline,
+            `${constants.payloads.decline}|${jobId}`,
+          ),
+      },
+    );
+  } catch {}
 };
