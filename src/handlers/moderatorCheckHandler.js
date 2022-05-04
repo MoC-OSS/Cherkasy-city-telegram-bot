@@ -10,6 +10,7 @@ const messages = require('../messages');
 const { jobService } = require('../services');
 const sendToModeratorHandler = require('./sendToModerator');
 const cancelBtnHandler = require('./cancelBtnHandler');
+const logger = require('../logger');
 
 const spamStack = [];
 
@@ -19,35 +20,49 @@ const spamStack = [];
  * */
 const publishHandler = async (ctx, jobId) => {
   await jobService.setModerated(jobId);
-  try {
-    const job = await jobService.getById(jobId);
-    const { message_id: messageId } = await ctx.api.sendMessage(
-      config.channel.id,
-      messages.shareJobFlow.publish(job),
-      { parse_mode: 'HTML' },
-    );
+  const job = await jobService.getById(jobId);
+  const { message_id: messageId } = await ctx.api
+    .sendMessage(config.channel.id, messages.shareJobFlow.publish(job), {
+      parse_mode: 'HTML',
+    })
+    .then(function (resp) {
+      logger.log(resp);
+      return resp;
+    })
+    .catch(function (error) {
+      logger.error(error);
+    });
 
-    await jobService.setDataForRemoving(jobId, messageId);
-    const keyboard = new Keyboard().text(messages.buttons.shareJob);
-    await ctx.api.sendMessage(
-      job.creatorId,
-      messages.jobPublished(job.countId),
-      {
-        reply_to_message_id: job.previewMessageId,
-        parse_mode: 'HTML',
-        reply_markup: {
-          one_time_keyboard: true,
-          resize_keyboard: true,
-          keyboard: keyboard.build(),
-        },
+  await jobService.setDataForRemoving(jobId, messageId);
+  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  await ctx.api
+    .sendMessage(job.creatorId, messages.jobPublished(job.countId), {
+      reply_to_message_id: job.previewMessageId,
+      parse_mode: 'HTML',
+      reply_markup: {
+        one_time_keyboard: true,
+        resize_keyboard: true,
+        keyboard: keyboard.build(),
       },
-    );
-    if (ctx.from.id === config.moderator.id) {
-      await ctx.reply(messages.moderating.published(job.countId), {
+    })
+    .then(function (resp) {
+      logger.log(resp);
+    })
+    .catch(function (error) {
+      logger.error(error);
+    });
+  if (ctx.from.id === config.moderator.id) {
+    await ctx
+      .reply(messages.moderating.published(job.countId), {
         reply_to_message_id: ctx.update.callback_query.message.message_id,
+      })
+      .then(function (resp) {
+        logger.log(resp);
+      })
+      .catch(function (error) {
+        logger.error(error);
       });
-    }
-  } catch {}
+  }
 };
 
 /**
@@ -56,25 +71,33 @@ const publishHandler = async (ctx, jobId) => {
  * */
 const declineHandler = async (ctx, jobId) => {
   // notify creator
-  try {
-    const job = await jobService.getById(jobId);
-    const keyboard = new Keyboard().text(messages.buttons.shareJob);
-    await ctx.api.sendMessage(
-      job.creatorId,
-      messages.jobCanceled(job.countId),
-      {
-        reply_to_message_id: job.previewMessageId,
-        reply_markup: {
-          one_time_keyboard: true,
-          resize_keyboard: true,
-          keyboard: keyboard.build(),
-        },
+  const job = await jobService.getById(jobId);
+  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  await ctx.api
+    .sendMessage(job.creatorId, messages.jobCanceled(job.countId), {
+      reply_to_message_id: job.previewMessageId,
+      reply_markup: {
+        one_time_keyboard: true,
+        resize_keyboard: true,
+        keyboard: keyboard.build(),
       },
-    );
-    await ctx.reply(messages.moderating.declined(job.countId), {
-      reply_to_message_id: ctx.update.callback_query.message.message_id,
+    })
+    .then(function (resp) {
+      logger.log(resp);
+    })
+    .catch(function (error) {
+      logger.error(error);
     });
-  } catch {}
+  await ctx
+    .reply(messages.moderating.declined(job.countId), {
+      reply_to_message_id: ctx.update.callback_query.message.message_id,
+    })
+    .then(function (resp) {
+      logger.log(resp);
+    })
+    .catch(function (error) {
+      logger.error(error);
+    });
 };
 /**
  * @param {GrammyContext} ctx

@@ -9,6 +9,7 @@ const constants = require('../constants');
 const config = require('../config');
 const messages = require('../messages');
 const { jobService } = require('../services');
+const logger = require('../logger');
 
 /**
  * @param {GrammyContext} ctx
@@ -24,12 +25,11 @@ module.exports = async (ctx) => {
     return ctx
       .reply(messages.default)
       .then(function (resp) {
-        // ...snip...
+        logger.log(resp);
+        return resp;
       })
       .catch(function (error) {
-        if (error.response && error.response.statusCode === 403) {
-          // ...snip...
-        }
+        logger.error(error);
       });
 
   const records = await jobService.getAllRecords();
@@ -55,9 +55,13 @@ module.exports = async (ctx) => {
   XLSX.utils.book_append_sheet(wb, ws, 'Responses');
   const wbOpts = { bookType: 'xlsx', type: 'buffer' };
   const resp = XLSX.write(wb, wbOpts); // write workbook buffer
-  try {
-    return ctx.replyWithDocument(
-      new InputFile(resp, `${new Date().toISOString()}.xlsx`),
-    );
-  } catch {}
+  return ctx
+    .replyWithDocument(new InputFile(resp, `${new Date().toISOString()}.xlsx`))
+    .then(function (resp) {
+      logger.log(resp);
+      return resp;
+    })
+    .catch(function (error) {
+      logger.error(error);
+    });
 };

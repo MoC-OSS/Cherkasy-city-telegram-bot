@@ -5,6 +5,7 @@
 const { Keyboard } = require('grammy');
 
 const messages = require('../messages');
+const logger = require('../logger');
 
 /**
  * @param {GrammyContext} ctx
@@ -18,11 +19,10 @@ module.exports = async (ctx) => {
       keyboard: keyboard.build(),
     })
     .then(function (resp) {
-      // ...snip...
+      logger.log(resp);
+      return resp;
     })
     .catch(function (error) {
-      if (error.response && error.response.statusCode === 403) {
-        // ...snip...
-      }
+      logger.error(error);
     });
 };
