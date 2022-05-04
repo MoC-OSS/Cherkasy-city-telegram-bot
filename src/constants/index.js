@@ -1,3 +1,7 @@
+const timeFrame = process.env.DELETION_TIME
+  ? parseInt(process.env.DELETION_TIME, 10)
+  : 48 * 60 * 60 - 300 * 1000;
+
 module.exports = Object.freeze({
   commands: {
     start: 'start',
@@ -23,7 +27,7 @@ module.exports = Object.freeze({
     decline: 'job_mod_dec',
   },
   // removeTime: 60 * 60 * 24 * 1000,
-  removeTime: 48 * 60 * 60 * 1000,
+  removeTime: timeFrame * 1000,
   timeSettings: {
     ukraine: 'uk-UA',
     local: {
