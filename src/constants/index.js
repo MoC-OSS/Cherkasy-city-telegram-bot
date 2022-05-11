@@ -1,6 +1,6 @@
 const timeFrame = process.env.DELETION_TIME
   ? parseInt(process.env.DELETION_TIME, 10)
-  : 48 * 60 * 60 - 300 * 1000;
+  : 48 * 60 * 60 - 300;
 
 module.exports = Object.freeze({
   commands: {
