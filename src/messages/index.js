@@ -1,4 +1,5 @@
 const config = require('../config');
+const signature = process.env.SIGNATURE ? ' ' + process.env.SIGNATURE : '';
 
 module.exports = Object.freeze({
   welcome: process.env.GREET_MSG
@@ -39,7 +40,8 @@ module.exports = Object.freeze({
       '❗️ Шукаєте працівників? Діліться актуальними вакансіями в цьому каналі' +
       ` за допомогою Telegram боту @${config.bot.url}` +
       ` "${config.bot.name}".\nTelegram бот створено командою` +
-      ' Master of Code Global',
+      ' Master of Code Global' +
+      signature,
     publish: (data) =>
       `<b>${data.jobName.toUpperCase()}</b>\n` +
       `<b>${data.componyName}</b>\n` +
@@ -52,7 +54,8 @@ module.exports = Object.freeze({
       '❗️ Шукаєте працівників? Діліться актуальними вакансіями в цьому каналі' +
       ` за допомогою Telegram боту @${config.bot.url}` +
       ` "${config.bot.name}".\nTelegram бот створено командою` +
-      ' Master of Code Global',
+      ' Master of Code Global' +
+      signature,
   },
   moderating: {
     sendToModerator: (countId) =>
