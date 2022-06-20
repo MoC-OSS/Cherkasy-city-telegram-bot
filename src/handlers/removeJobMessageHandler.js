@@ -33,6 +33,11 @@ const handler = async (bot) => {
           .text(
             messages.buttons.noActual,
             `${constants.payloads.skip}|${aJob.id}`,
+          )
+          .row()
+          .text(
+            messages.buttons.closed,
+            `${constants.payloads.closed}|${aJob.id}`,
           ),
       })
       .then(function (resp) {

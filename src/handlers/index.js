@@ -9,9 +9,12 @@ const startCommandHandler = require('./startCommandHandler');
 const sendToModerator = require('./sendToModerator');
 const moderatorCheckHandler = require('./moderatorCheckHandler');
 const cancelBtnHandler = require('./cancelBtnHandler');
+const skipBtnHandler = require('./skipBtnHandler');
+const closedBtnHandler = require('./closedBtnHandler');
 const shareJob = require('./shareJob');
 const removeJobMessageHandler = require('./removeJobMessageHandler');
 const statisticsHandler = require('./statisticsHandler');
+const { editJobField } = require('./editBtnHandler');
 
 module.exports = {
   /**
@@ -29,5 +32,8 @@ module.exports = {
   //
   sendToModerator,
   cancelBtnHandler,
+  skipBtnHandler,
+  closedBtnHandler,
   removeJobMessageHandler,
+  editJobField,
 };

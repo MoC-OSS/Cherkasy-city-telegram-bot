@@ -5,27 +5,23 @@
 const { Keyboard } = require('grammy');
 
 const messages = require('../messages');
-const logger = require('../logger');
+const { jobService } = require('../services');
 
 /**
  * @param {GrammyContext} ctx
  * */
-module.exports = async (ctx) => {
+
+module.exports = async (ctx, jobId) => {
+  const jobCountId = await jobService.getCountId(jobId);
   const keyboard = new Keyboard()
     .text(messages.buttons.shareJob)
     .row()
     .text(messages.buttons.help);
-  ctx
-    .reply(messages.default, {
+  ctx.reply(messages.jobSkipped(jobCountId), {
+    reply_markup: {
       one_time_keyboard: true,
       resize_keyboard: true,
       keyboard: keyboard.build(),
-    })
-    .then(function (resp) {
-      logger.log(resp);
-      return resp;
-    })
-    .catch(function (error) {
-      logger.error(error);
-    });
+    },
+  });
 };

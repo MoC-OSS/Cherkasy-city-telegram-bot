@@ -86,6 +86,11 @@ module.exports = {
       is_moderated: true,
     }),
 
+  setClosed: (jobId) =>
+    jobsModel.setValueById(jobId, {
+      is_closed: true,
+    }),
+
   setPreViewMessage: (jobId, preViewMessageId) =>
     jobsModel.setValueById(jobId, {
       preview_message_id: preViewMessageId,

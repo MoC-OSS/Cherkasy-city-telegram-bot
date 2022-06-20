@@ -12,5 +12,6 @@ module.exports = {
    * */
   setHears: (bot) => {
     bot.hears(buttons.shareJob, handlers.shareJob.initFlow);
+    bot.hears(buttons.help, handlers.shareJob.help);
   },
 };

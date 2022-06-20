@@ -15,7 +15,11 @@ const logger = require('../logger');
  * */
 module.exports = async (ctx, jobId) => {
   const job = await jobService.getById(jobId);
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  const keyboard = new Keyboard()
+    .text(messages.buttons.shareJob)
+    .row()
+    .text(messages.buttons.help);
+  // ctx.session.editUserType = 'moderator';
   await ctx
     .reply(messages.moderating.sendToModerator(job.countId), {
       reply_markup: {
@@ -38,7 +42,7 @@ module.exports = async (ctx, jobId) => {
       config.moderator.id,
       `${messages.moderating.request(
         `@${ctx.from?.username},`,
-      )}\n\n${messages.shareJobFlow.preView(job)}`,
+      )}\n\n${messages.shareJobFlow.modPreView(job)}`,
       {
         parse_mode: 'HTML',
         reply_markup: new InlineKeyboard()
@@ -46,6 +50,8 @@ module.exports = async (ctx, jobId) => {
             messages.buttons.publish,
             `${constants.payloads.publish}|${jobId}`,
           )
+          // .row()
+          // .text(messages.buttons.edit, `${constants.payloads.edit}|${jobId}`)
           .row()
           .text(
             messages.buttons.decline,

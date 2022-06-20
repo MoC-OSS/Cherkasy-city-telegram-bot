@@ -224,8 +224,15 @@ const contactData = async (ctx) => {
   ctx.session.step = constants.steps.preView;
 
   await jobService.setContact(ctx.session.jobId, ctx.msg.text);
+  await previewMessage(ctx);
+};
 
+/**
+ * @param {GrammyContext} ctx
+ * */
+const previewMessage = async (ctx) => {
   const job = await jobService.getById(ctx.session.jobId);
+  ctx.session.editUserType = 'client';
 
   const { message_id: preViewMessageId } = await ctx
     .reply(messages.shareJobFlow.preView(job), {
@@ -236,6 +243,8 @@ const contactData = async (ctx) => {
           messages.buttons.sendToModerator,
           `${constants.payloads.toModerator}|${job.id}`,
         )
+        .row()
+        .text(messages.buttons.edit, `${constants.payloads.edit}|${job.id}`)
         .row()
         .text(
           messages.buttons.cancel,
@@ -260,6 +269,21 @@ const contactData = async (ctx) => {
     });
 };
 
+const help = async (ctx) => {
+  ctx.session.step = '';
+  return ctx
+    .reply(messages.shareJobFlow.help, {
+      parse_mode: 'HTML',
+    })
+    .then(function (resp) {
+      logger.log(resp);
+      return resp;
+    })
+    .catch(function (error) {
+      logger.error(error);
+    });
+};
+
 module.exports = {
   initFlow,
   componyName,
@@ -268,4 +292,6 @@ module.exports = {
   jobDescription,
   jobSalary,
   contactData,
+  previewMessage,
+  help,
 };

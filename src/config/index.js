@@ -46,6 +46,7 @@ module.exports = Object.freeze({
   debug: envVars.DEBUG,
   moderator: {
     id: envVars.MODERATOR_ID,
+    username: envVars.MODERATOR_USERNAME,
   },
   channel: {
     id: envVars.CHANNEL_ID,

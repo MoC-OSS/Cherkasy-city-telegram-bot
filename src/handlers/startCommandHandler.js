@@ -5,7 +5,10 @@ const logger = require('../logger');
 
 module.exports = async (ctx) => {
   ctx.session.step = '';
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  const keyboard = new Keyboard()
+    .text(messages.buttons.shareJob)
+    .row()
+    .text(messages.buttons.help);
   await ctx
     .reply(messages.welcome, {
       parse_mode: 'HTML',

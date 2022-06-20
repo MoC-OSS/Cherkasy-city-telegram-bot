@@ -10,6 +10,18 @@ const messages = require('../messages');
 const { jobService } = require('../services');
 const sendToModeratorHandler = require('./sendToModerator');
 const cancelBtnHandler = require('./cancelBtnHandler');
+const {
+  editBtnHandler,
+  editCityBtnHandler,
+  editCompanyNameBtnHandler,
+  editContactsBtnHandler,
+  editDescriptionBtnHandler,
+  editJobNameBtnHandler,
+  editSalaryBtnHandler,
+  endEditingBtnHandler,
+} = require('./editBtnHandler');
+const skipBtnHandler = require('./skipBtnHandler');
+const closedBtnHandler = require('./closedBtnHandler');
 const logger = require('../logger');
 
 const spamStack = [];
@@ -34,7 +46,10 @@ const publishHandler = async (ctx, jobId) => {
     });
 
   await jobService.setDataForRemoving(jobId, messageId);
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  const keyboard = new Keyboard()
+    .text(messages.buttons.shareJob)
+    .row()
+    .text(messages.buttons.help);
   await ctx.api
     .sendMessage(job.creatorId, messages.jobPublished(job.countId), {
       reply_to_message_id: job.previewMessageId,
@@ -72,7 +87,10 @@ const publishHandler = async (ctx, jobId) => {
 const declineHandler = async (ctx, jobId) => {
   // notify creator
   const job = await jobService.getById(jobId);
-  const keyboard = new Keyboard().text(messages.buttons.shareJob);
+  const keyboard = new Keyboard()
+    .text(messages.buttons.shareJob)
+    .row()
+    .text(messages.buttons.help);
   await ctx.api
     .sendMessage(job.creatorId, messages.jobCanceled(job.countId), {
       reply_to_message_id: job.previewMessageId,
@@ -136,10 +154,38 @@ module.exports = async (ctx) => {
         await sendToModeratorHandler(ctx, jobId);
       } catch {}
       break;
+    case constants.payloads.edit:
+      await editBtnHandler(ctx, jobId);
+      break;
     case constants.payloads.cancel:
       await cancelBtnHandler(ctx, jobId);
       break;
     case constants.payloads.skip:
+      await skipBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.closed:
+      await closedBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.editCompanyName:
+      await editCompanyNameBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.editJobName:
+      await editJobNameBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.editCity:
+      await editCityBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.editDescription:
+      await editDescriptionBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.editSalary:
+      await editSalaryBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.editContacts:
+      await editContactsBtnHandler(ctx, jobId);
+      break;
+    case constants.payloads.endEditing:
+      await endEditingBtnHandler(ctx, jobId);
       break;
 
     default:

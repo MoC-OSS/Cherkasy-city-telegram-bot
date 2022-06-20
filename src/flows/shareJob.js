@@ -11,5 +11,6 @@ router.route(constants.steps.jobName, handlers.shareJob.jobName);
 router.route(constants.steps.jobDescription, handlers.shareJob.jobDescription);
 router.route(constants.steps.jobSalary, handlers.shareJob.jobSalary);
 router.route(constants.steps.contactData, handlers.shareJob.contactData);
+router.route(constants.steps.editJobField, handlers.editJobField);
 
 module.exports = router;
