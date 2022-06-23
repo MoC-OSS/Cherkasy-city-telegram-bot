@@ -43,6 +43,7 @@ module.exports = async (ctx) => {
     'Опис вакансії': aRecord.description,
     'Контактні дані': aRecord.contact,
     Опубліковано: aRecord.is_moderated ? 'Так' : 'Ні',
+    'Вакансія закрита': aRecord.is_closed ? 'Так' : 'Ні',
     'Час публікації':
       new Date(aRecord.published_time).toLocaleString(
         constants.timeSettings.ukraine,

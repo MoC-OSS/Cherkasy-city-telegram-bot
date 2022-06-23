@@ -24,6 +24,7 @@ const handler = async (bot) => {
     await bot.api
       .sendMessage(aJob.creator_id, messages.jobRePublished(aJob.count_id), {
         reply_to_message_id: aJob.preview_message_id,
+        parse_mode: 'HTML',
         reply_markup: new InlineKeyboard()
           .text(
             messages.buttons.rePublish,
