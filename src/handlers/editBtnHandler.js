@@ -3,12 +3,10 @@
  */
 
 const { InlineKeyboard } = require('grammy');
-const config = require('../config');
 const logger = require('../logger');
 const messages = require('../messages');
 const { jobService } = require('../services');
 const constants = require('../constants');
-const moderatorCheckHandler = require('./moderatorCheckHandler');
 const { previewMessage } = require('./shareJob/index');
 const sendToModerator = require('./sendToModerator');
 
