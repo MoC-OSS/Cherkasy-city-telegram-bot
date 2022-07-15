@@ -7,7 +7,7 @@ const logger = require('../logger');
 const messages = require('../messages');
 const { jobService } = require('../services');
 const constants = require('../constants');
-const { previewMessage } = require('./shareJob/index');
+const previewHandler = require('./previewHandler');
 const sendToModerator = require('./sendToModerator');
 
 /**
@@ -204,7 +204,7 @@ async function editJobField(ctx) {
 async function endEditingBtnHandler(ctx) {
   switch (ctx.session.editUserType) {
     case 'client':
-      await previewMessage(ctx);
+      await previewHandler(ctx);
       break;
     case 'moderator':
       await sendToModerator(ctx, ctx.session.jobId);
