@@ -80,7 +80,7 @@ async function editCompanyNameBtnHandler(ctx) {
   ctx.session.fieldType = constants.payloads.editCompanyName;
   return ctx;
 }
-async function editJobNameBtnHandler(ctx, jobId) {
+async function editJobNameBtnHandler(ctx) {
   ctx
     .reply(messages.shareJobFlow.jobName, {
       parse_mode: 'HTML',
@@ -168,37 +168,39 @@ async function editContactsBtnHandler(ctx) {
 async function editJobField(ctx) {
   switch (ctx.session.fieldType) {
     case constants.payloads.editCompanyName:
-      await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
       ctx.session.step = '';
+      await jobService.setComponyName(ctx.session.jobId, ctx.msg.text);
       await editBtnHandler(ctx, ctx.session.jobId);
       break;
     case constants.payloads.editJobName:
-      await jobService.setName(ctx.session.jobId, ctx.msg.text);
       ctx.session.step = '';
+      await jobService.setName(ctx.session.jobId, ctx.msg.text);
       await editBtnHandler(ctx, ctx.session.jobId);
       break;
     case constants.payloads.editCity:
-      await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
       ctx.session.step = '';
+      await jobService.setSettlement(ctx.session.jobId, ctx.msg.text);
       await editBtnHandler(ctx, ctx.session.jobId);
       break;
     case constants.payloads.editDescription:
-      await jobService.setDescription(ctx.session.jobId, ctx.msg.text);
       ctx.session.step = '';
+      await jobService.setDescription(ctx.session.jobId, ctx.msg.text);
       await editBtnHandler(ctx, ctx.session.jobId);
       break;
     case constants.payloads.editSalary:
-      await jobService.setSalary(ctx.session.jobId, ctx.msg.text);
       ctx.session.step = '';
+      await jobService.setSalary(ctx.session.jobId, ctx.msg.text);
       await editBtnHandler(ctx, ctx.session.jobId);
       break;
     case constants.payloads.editContacts:
-      await jobService.setContact(ctx.session.jobId, ctx.msg.text);
       ctx.session.step = '';
+      await jobService.setContact(ctx.session.jobId, ctx.msg.text);
+      await editBtnHandler(ctx, ctx.session.jobId);
+      break;
+    default:
       await editBtnHandler(ctx, ctx.session.jobId);
       break;
   }
-  await editBtnHandler(ctx, ctx.session.jobId);
 }
 
 async function endEditingBtnHandler(ctx) {
