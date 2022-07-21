@@ -14,6 +14,15 @@ const sendToModerator = require('./sendToModerator');
  * @param {GrammyContext} ctx
  * */
 
+async function beforeHandlerChecker(ctx, length) {
+  if (ctx.callbackQuery) {
+    return true;
+  }
+  if (ctx.msg.text && ctx.msg.text.length >= length) return true;
+
+  return false;
+}
+
 async function editBtnHandler(ctx, jobId) {
   const job = await jobService.getById(jobId);
   ctx.api
@@ -166,6 +175,22 @@ async function editContactsBtnHandler(ctx) {
  * @param {GrammyContext} ctx
  * */
 async function editJobField(ctx) {
+  if (await beforeHandlerChecker(ctx, 1023)) {
+    switch (ctx.session.fieldType) {
+      case constants.payloads.editCompanyName:
+        return editCompanyNameBtnHandler(ctx);
+      case constants.payloads.editJobName:
+        return editJobNameBtnHandler(ctx);
+      case constants.payloads.editCity:
+        return editCityBtnHandler(ctx);
+      case constants.payloads.editDescription:
+        return editDescriptionBtnHandler(ctx);
+      case constants.payloads.editSalary:
+        return editSalaryBtnHandler(ctx);
+      case constants.payloads.editContacts:
+        return editContactsBtnHandler(ctx);
+    }
+  }
   switch (ctx.session.fieldType) {
     case constants.payloads.editCompanyName:
       ctx.session.step = '';
