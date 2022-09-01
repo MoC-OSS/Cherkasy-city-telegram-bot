@@ -6,7 +6,41 @@ const config = require('../config');
 const messages = require('../messages');
 const logger = require('../logger');
 
-const handler = async (bot) => {
+async function jobRemoved(bot, job) {
+  // notify job creator
+  await bot.api
+    .sendMessage(job.creator_id, messages.jobRePublished(job.count_id), {
+      reply_to_message_id: job.preview_message_id,
+      parse_mode: 'HTML',
+      reply_markup: new InlineKeyboard()
+        .text(
+          messages.buttons.rePublish,
+          `${constants.payloads.publish}|${job.id}`,
+        )
+        .row()
+        .text(
+          messages.buttons.noActual,
+          `${constants.payloads.skip}|${job.id}`,
+        )
+        .row()
+        .text(
+          messages.buttons.closed,
+          `${constants.payloads.closed}|${job.id}`,
+        ).row()
+        .text(
+          messages.buttons.edit,
+          `${constants.payloads.edit}|${job.id}`,
+        ),
+    })
+    .then(function (resp) {
+      logger.log(resp);
+    })
+    .catch(function (error) {
+      logger.error(error);
+    });
+}
+
+async function deletionHandler(bot) {
   const jobsForRemoving = await jobService.getForRemoving();
 
   jobsForRemoving.forEach(async (aJob) => {
@@ -20,34 +54,14 @@ const handler = async (bot) => {
       logger.error('Happen error when try to delete job from channel');
       logger.error(error);
     }
-    // notify job creator
-    await bot.api
-      .sendMessage(aJob.creator_id, messages.jobRePublished(aJob.count_id), {
-        reply_to_message_id: aJob.preview_message_id,
-        parse_mode: 'HTML',
-        reply_markup: new InlineKeyboard()
-          .text(
-            messages.buttons.rePublish,
-            `${constants.payloads.publish}|${aJob.id}`,
-          )
-          .row()
-          .text(
-            messages.buttons.noActual,
-            `${constants.payloads.skip}|${aJob.id}`,
-          )
-          .row()
-          .text(
-            messages.buttons.closed,
-            `${constants.payloads.closed}|${aJob.id}`,
-          ),
-      })
-      .then(function (resp) {
-        logger.log(resp);
-      })
-      .catch(function (error) {
-        logger.error(error);
-      });
+    jobRemoved(bot, aJob);
   });
-};
 
-module.exports = handler;
+}
+
+
+
+module.exports = {
+  deletionHandler,
+  jobRemoved
+};

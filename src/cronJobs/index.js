@@ -1,9 +1,9 @@
 const cron = require('node-cron');
 
-const { removeJobMessageHandler } = require('../handlers');
+const { deletionHandler } = require('../handlers');
 
 module.exports = {
   messageCleanerJob: (bot) => {
-    cron.schedule('* * * * *', () => removeJobMessageHandler(bot));
+    cron.schedule('* * * * *', () => deletionHandler(bot));
   },
 };

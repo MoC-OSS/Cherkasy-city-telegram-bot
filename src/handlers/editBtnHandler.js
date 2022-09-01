@@ -32,6 +32,10 @@ async function beforeHandlerChecker(ctx, length) {
 }
 
 async function editBtnHandler(ctx, jobId) {
+  if (!ctx.session.editUserType) {
+    ctx.session.editUserType = 'client';
+  }
+  ctx.session.jobId = jobId;
   const job = await jobService.getById(jobId);
   ctx.api
     .sendMessage(ctx.chat.id, messages.shareJobFlow.editPreView(job), {
@@ -371,7 +375,7 @@ moderatorCheckHandler = async (ctx) => {
     case constants.payloads.toModerator:
       try {
         await sendToModeratorHandler(ctx, jobId);
-      } catch {}
+      } catch { }
       break;
     case constants.payloads.edit:
       await editBtnHandler(ctx, jobId);
@@ -410,7 +414,7 @@ moderatorCheckHandler = async (ctx) => {
     default:
       try {
         ctx.reply(messages.error);
-      } catch {}
+      } catch { }
       break;
   }
   try {
@@ -419,7 +423,7 @@ moderatorCheckHandler = async (ctx) => {
       ctx.update.callback_query.message.message_id,
       ctx.update.callback_query.message.text,
     );
-  } catch {}
+  } catch { }
 };
 
 module.exports = {

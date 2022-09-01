@@ -12,7 +12,7 @@ const cancelBtnHandler = require('./cancelBtnHandler');
 const skipBtnHandler = require('./skipBtnHandler');
 const closedBtnHandler = require('./closedBtnHandler');
 const shareJob = require('./shareJob');
-const removeJobMessageHandler = require('./removeJobMessageHandler');
+const { deletionHandler } = require('./removeJobMessageHandler');
 const statisticsHandler = require('./statisticsHandler');
 const { editJobField } = require('./editBtnHandler');
 
@@ -34,6 +34,6 @@ module.exports = {
   cancelBtnHandler,
   skipBtnHandler,
   closedBtnHandler,
-  removeJobMessageHandler,
+  deletionHandler,
   editJobField,
 };
