@@ -18,7 +18,7 @@
     "@satont/grammy-psql-storage": "^1.0.0",
     "dotenv": "^16.0.0",
     "grammy": "^1.7.0",
-    "knex": "^1.0.4",
+    "knex": "^2.4.0",
     "node-cron": "^3.0.0",
     "npm": "^8.5.3",
     "pg": "^8.7.3",
